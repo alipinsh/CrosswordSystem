@@ -1,0 +1,16 @@
+{
+	"size": [5, 5],
+	"positions": [
+		[0, 1],
+		[4, 0]
+	],
+	"questions": [
+		{
+			"1": [ "Kukainis, kurš dzer asini.", "ods" ],
+			"2": [ "Kubisks priekšmēts lapā.", "bloks" ]
+		},
+		{
+			"1": [ "Liels, stiprs koks.", "ozols" ]
+		}
+	]
+}

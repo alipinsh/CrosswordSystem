@@ -1,0 +1,81 @@
+.account-info {
+    display: table;
+    width: 80%;
+    margin: 0 auto 16px;
+    background-color: #b2b2b2;
+    padding: 8px;
+    height: 200px;
+}
+
+.avatar {
+    display: table-cell;
+    width: 50%;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.account-stats {
+    display: table-cell;
+    width: 50%;
+    vertical-align: top;
+}
+
+.account-stats .username {
+    font-weight: 600;
+}
+
+.account-config {
+    width: 80%;
+    margin: 0 auto 16px;
+    padding: 8px;
+    border: 1px solid #7b7b7b;
+}
+
+.account-config-options {
+    text-align: center;
+}
+
+#change-picture-tab,
+#change-email-tab,
+#change-password-tab {
+    display: none;
+}
+
+.account-crossword-lists {
+    display: table;
+    width: 100%;
+    border-collapse: collapse;
+    border-style: hidden;
+}
+
+.created-crosswords,
+.favorited-crosswords {
+    display: table-cell;
+    width: 50%;
+    border: 16px solid transparent;
+}
+
+.image-info {
+    margin-bottom: 16px;
+}
+
+.image-error {
+    padding: 8px;
+    background-color: #c46c71;
+    margin-bottom: 16px;
+}
+
+.image-error:empty {
+    padding: 0;
+}
+
+.save-block {
+    border: 1px solid #7b7b7b;
+    padding: 8px;
+    margin-bottom: 16px;
+}
+
+.delete-save-button-container {
+    text-align: right;
+}
