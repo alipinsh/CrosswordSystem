@@ -90,7 +90,7 @@ class CommentController extends BaseController {
     public function delete() {
         $commentId = $this->request->getPost('id');
         $comment = $this->commentModel->find($commentId);
-        if (!$comment || $comment['user_id'] == $this->session->get('userData.id')) {
+        if (!$comment || $comment['user_id'] != $this->session->get('userData.id')) {
             return $this->response->setJSON(['error' => 'comment unavailable']);
         }
         $crossword = $this->crosswordModel->find($comment['crossword_id']);
