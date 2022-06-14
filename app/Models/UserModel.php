@@ -8,60 +8,60 @@ namespace App\Models;
 use CodeIgniter\Model;
 
 class UserModel extends Model {
-	protected $table = 'users';
-	protected $primaryKey = 'id';
+    protected $table = 'users';
+    protected $primaryKey = 'id';
 
     protected $returnType = 'array';
     
-	protected $allowedFields = [
-		'username', 'email', 'image', 'created_count', 'favorited_count', 'registered_on',
+    protected $allowedFields = [
+        'username', 'email', 'image', 'created_count', 'favorited_count', 'registered_on',
         'password', 'password_confirm',
-		'new_email', 'auth_code', 'code_expires', 'email_confirmed'
-	];
+        'new_email', 'auth_code', 'code_expires', 'email_confirmed'
+    ];
 
-	protected $useTimestamps = false;
+    protected $useTimestamps = false;
     protected $dateFormat = 'datetime';
     
     protected $validationRules = [];
 
-	protected $validationMessages = [];
+    protected $validationMessages = [];
 
-	protected $skipValidation = false;
+    protected $skipValidation = false;
 
-	protected $beforeInsert = ['hashPassword'];
+    protected $beforeInsert = ['hashPassword'];
     protected $beforeUpdate = ['hashPassword'];
     
-	protected function hashPassword(array $data)
-	{
-		if (! isset($data['data']['password'])) return $data;
+    protected function hashPassword(array $data)
+    {
+        if (! isset($data['data']['password'])) return $data;
 
-		$data['data']['password_hash'] = password_hash($data['data']['password'], PASSWORD_DEFAULT);
-		unset($data['data']['password']);
-		unset($data['data']['password_confirm']);
+        $data['data']['password_hash'] = password_hash($data['data']['password'], PASSWORD_DEFAULT);
+        unset($data['data']['password']);
+        unset($data['data']['password_confirm']);
 
-		return $data;
-	}
+        return $data;
+    }
 
-	public function getUsernameById(int $id) {
-	    $user = $this->find($id);
-	    if ($user) {
-	        return $user['username'];
+    public function getUsernameById(int $id) {
+        $user = $this->find($id);
+        if ($user) {
+            return $user['username'];
         }
-	    return null;
+        return null;
     }
 
     public function getIdByUsername(string $username) {
-	    $user = $this->where('username', $username)->find();
-	    if ($user) {
-	        return $user[0]['id'];
+        $user = $this->where('username', $username)->find();
+        if ($user) {
+            return $user[0]['id'];
         }
-	    return null;
+        return null;
     }
 
-	public function updateCreatedCount(int $userId) {
-	    $builder = $this->db->table('crosswords');
-	    $count = $builder->where('user_id', $userId)->where('is_public', 1)->countAllResults();
-	    $this->save(['id' => $userId, 'created_count' => $count]);
+    public function updateCreatedCount(int $userId) {
+        $builder = $this->db->table('crosswords');
+        $count = $builder->where('user_id', $userId)->where('is_public', 1)->countAllResults();
+        $this->save(['id' => $userId, 'created_count' => $count]);
     }
 
     public function updateFavoritedCount(int $userId) {

@@ -19,7 +19,7 @@
         <button type="submit"><?= lang('Account.login') ?></button>
     </p>
     <p>
-    	<a href="<?= site_url('forgot-password'); ?>" class="float-right"><?= lang('Account.forgotYourPassword') ?></a>
+        <a href="<?= site_url('forgot-password'); ?>" class="float-right"><?= lang('Account.forgotYourPassword') ?></a>
     </p>
 </form>
 

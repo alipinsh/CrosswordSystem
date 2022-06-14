@@ -16,7 +16,7 @@ class AuthController extends BaseController
         helper(['text', 'mail']);
     }
 
-	public function register() {
+    public function register() {
         if ($this->request->getMethod() === 'post') {
             $rules = [
                 'username' => 'required|min_length[2]|max_length[64]|is_unique[users.username]|alpha_dash',
@@ -72,9 +72,9 @@ class AuthController extends BaseController
                 return redirect()->to('/login')->withInput()->with('errors', $this->validator->getErrors());
             }
 
-		    $user = $this->userModel->where('email', $this->request->getPost('email'))->first();
-		    if (is_null($user) || !password_verify($this->request->getPost('password'), $user['password_hash'])) {
-			    return redirect()->to('/login')->withInput()->with('error', lang('Account.wrongCredentials'));
+            $user = $this->userModel->where('email', $this->request->getPost('email'))->first();
+            if (is_null($user) || !password_verify($this->request->getPost('password'), $user['password_hash'])) {
+                return redirect()->to('/login')->withInput()->with('error', lang('Account.wrongCredentials'));
             }
             
             if (!$user['email_confirmed']) {
@@ -93,16 +93,16 @@ class AuthController extends BaseController
         }
 
         if ($this->session->get('userData.id')) {
-			return redirect()->to('/account');
+            return redirect()->to('/account');
         }
         
-		return view('auth/login');
+        return view('auth/login');
     }
 
     public function logout() {
         $this->session->remove('userData');
         
-		return redirect()->to('/login');
+        return redirect()->to('/login');
     }
     
     public function forgotPassword() {
@@ -128,20 +128,20 @@ class AuthController extends BaseController
             send_mail($this->request->getPost('email'), lang('Account.passwordResetRequest'), 'email/reset', ['hash' => $reset_code]);
             return redirect()->back()->with('success', lang('Account.forgottenPasswordEmail'));
         }
-		if ($this->session->get('userData.id')) {
-			return redirect()->to('/account');
+        if ($this->session->get('userData.id')) {
+            return redirect()->to('/account');
         }
         
-		return view('auth/forgot_password');
-	}
+        return view('auth/forgot_password');
+    }
 
     public function resetPassword() {
         if ($this->request->getMethod() === 'post') {
             $rules = [
-			    'token'	=> 'required',
-			    'password' => 'required|min_length[8]|max_length[64]',
-			    'password_confirm' => 'matches[password]'
-		    ];
+                'token'	=> 'required',
+                'password' => 'required|min_length[8]|max_length[64]',
+                'password_confirm' => 'matches[password]'
+            ];
             if (!$this->validate($rules)) {
                 return redirect()->back()->with('error', lang('Account.passwordMismatch'));
             }
@@ -163,15 +163,15 @@ class AuthController extends BaseController
             return redirect()->to('/login')->with('success', lang('Account.passwordUpdateSuccess'));
         }
 
-		$user = $this->userModel->where('auth_code', $this->request->getGet('token'))
-			                    ->where('code_expires >', time())
-			                    ->first();
+        $user = $this->userModel->where('auth_code', $this->request->getGet('token'))
+                                ->where('code_expires >', time())
+                                ->first();
 
-		if (!$user) {
+        if (!$user) {
             return redirect()->to('/login')->with('error', lang('Account.invalidRequest'));
         }
 
-		return view('auth/reset_password', ['token' => $this->request->getGet('token')]);
-	}
+        return view('auth/reset_password', ['token' => $this->request->getGet('token')]);
+    }
 
 }

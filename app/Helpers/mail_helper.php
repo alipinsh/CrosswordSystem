@@ -3,7 +3,6 @@
  * Palīgfunkcija atsūtīt e-pasta vēstuli, uzcelto no kāda šāblona.
  */
 
-
 use Config\Services;
 
 if (!function_exists('send_mail')) {

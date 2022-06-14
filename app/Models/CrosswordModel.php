@@ -21,48 +21,48 @@ class CrosswordModel extends Model {
     const CREATED = 0;
     const FAVORITED = 1;
 
-	protected $table = 'crosswords';
-	protected $primaryKey = 'id';
+    protected $table = 'crosswords';
+    protected $primaryKey = 'id';
 
     protected $returnType = 'array';
     
-	protected $allowedFields = [
-	    'published_at', 'updated_at',
-		'title', 'width', 'height',
+    protected $allowedFields = [
+        'published_at', 'updated_at',
+        'title', 'width', 'height',
         'questions', 'favorites', 'is_public', 'data', 'user_id', 'tags'
-	];
+    ];
 
-	protected $useTimestamps = false;
+    protected $useTimestamps = false;
     protected $dateFormat = 'datetime';
     
     protected $validationRules = [];
 
-	protected $validationMessages = [];
+    protected $validationMessages = [];
 
-	protected $skipValidation = false;
+    protected $skipValidation = false;
 
-	public function getCrosswordList($limit = 0, $offset = 0) {
-		$builder = $this->db->table($this->table);
-		$builder->select([
-		    'crosswords.id',
+    public function getCrosswordList($limit = 0, $offset = 0) {
+        $builder = $this->db->table($this->table);
+        $builder->select([
+            'crosswords.id',
             'crosswords.title',
             'crosswords.width',
             'crosswords.height',
             'crosswords.questions',
             'crosswords.favorites'
         ]);
-		$builder->where('is_public', true);
-		$builder->orderBy('id', 'DESC');
+        $builder->where('is_public', true);
+        $builder->orderBy('id', 'DESC');
 
-		if ($limit) {
-			$builder->limit($limit);
-		}
-		if ($offset) {
-		    $builder->offset($offset);
+        if ($limit) {
+            $builder->limit($limit);
+        }
+        if ($offset) {
+            $builder->offset($offset);
         }
 
-		return $builder->get()->getResultArray();
-	}
+        return $builder->get()->getResultArray();
+    }
 
     public function getCrosswordListCount() {
         $builder = $this->db->table($this->table);
@@ -71,8 +71,8 @@ class CrosswordModel extends Model {
         return $builder->countAllResults();
     }
 
-	public function getCrosswordListByUser($userId = 0, $type = self::CREATED, $limit = 0, $offset = 0) {
-	    $builder = $this->db->table($this->table);
+    public function getCrosswordListByUser($userId = 0, $type = self::CREATED, $limit = 0, $offset = 0) {
+        $builder = $this->db->table($this->table);
         $builder->select([
             'crosswords.id',
             'crosswords.title',
@@ -239,28 +239,28 @@ class CrosswordModel extends Model {
         return $builder->countAllResults();
     }
 
-	public function getFavorited(int $crosswordId, int $userId) {
-		$favsTable = $this->db->table('users_favs');
-		$r = $favsTable->where('crossword_id', $crosswordId)->where('user_id', $userId)->countAllResults();
-		if (!$r) {
-			$favsTable->insert(['crossword_id' => $crosswordId, 'user_id' => $userId]);
-			$favCount = $favsTable->where('crossword_id', $crosswordId)->countAllResults();
-			$builder = $this->db->table($this->table);
-			$builder->where('id', $crosswordId);
-			$builder->update(['favorites' => $favCount]);
-			return true;
-		}
-		return false;
-	}
+    public function getFavorited(int $crosswordId, int $userId) {
+        $favsTable = $this->db->table('users_favs');
+        $r = $favsTable->where('crossword_id', $crosswordId)->where('user_id', $userId)->countAllResults();
+        if (!$r) {
+            $favsTable->insert(['crossword_id' => $crosswordId, 'user_id' => $userId]);
+            $favCount = $favsTable->where('crossword_id', $crosswordId)->countAllResults();
+            $builder = $this->db->table($this->table);
+            $builder->where('id', $crosswordId);
+            $builder->update(['favorites' => $favCount]);
+            return true;
+        }
+        return false;
+    }
 
-	public function checkIfUserFavorited(int $userId, int $crosswordId) {
-		$favsTable = $this->db->table('users_favs');
-		$r = $favsTable->where('crossword_id', $crosswordId)->where('user_id', $userId)->countAllResults();
-		return boolval($r);
-	}
+    public function checkIfUserFavorited(int $userId, int $crosswordId) {
+        $favsTable = $this->db->table('users_favs');
+        $r = $favsTable->where('crossword_id', $crosswordId)->where('user_id', $userId)->countAllResults();
+        return boolval($r);
+    }
 
-	public function validateCrosswordData(array &$crosswordData) {
-	    // size check
+    public function validateCrosswordData(array &$crosswordData) {
+        // size check
         if (!(is_numeric($crosswordData['size'][self::WIDTH])
             && is_numeric($crosswordData['size'][self::HEIGHT]))) {
             return false;
@@ -360,6 +360,6 @@ class CrosswordModel extends Model {
     }
 
     public function deleteById(int $id) {
-	    $this->delete($id);
+        $this->delete($id);
     }
 }

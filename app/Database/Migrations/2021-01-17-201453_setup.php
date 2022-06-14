@@ -11,7 +11,7 @@ use CodeIgniter\Database\Migration;
 
 class Setup extends Migration
 {
-	public function up()
+    public function up()
     {
         // users table
         $this->forge->addField([
@@ -68,20 +68,20 @@ class Setup extends Migration
                 'constraint' => 16, 
                 'null' => true
             ],
-        	'code_expires' => [
+            'code_expires' => [
                 'type' => 'DATETIME', 
                 'null' => true
             ],
-        	'email_confirmed' => [
+            'email_confirmed' => [
                 'type' => 'BOOLEAN', 
                 'null' => false, 
                 'default' => 0
             ]
         ]);
         $this->forge->addPrimaryKey('id');
-		$this->forge->createTable('users', true);
+        $this->forge->createTable('users', true);
 
-		// crosswords table
+        // crosswords table
         $this->forge->addField([
             'id' => [
                 'type' => 'INT',
@@ -139,9 +139,9 @@ class Setup extends Migration
         ]);
         $this->forge->addPrimaryKey('id');
         $this->forge->addForeignKey('user_id', 'users', 'id', 'CASCADE', 'CASCADE');
-		$this->forge->createTable('crosswords', true);
+        $this->forge->createTable('crosswords', true);
 
-		// tags table
+        // tags table
         $this->forge->addField([
             'id' => [
                 'type' => 'INT',
@@ -155,9 +155,9 @@ class Setup extends Migration
             ]
         ]);
         $this->forge->addPrimaryKey('id');
-		$this->forge->createTable('tags', true);
+        $this->forge->createTable('tags', true);
 
-		// crosswords_tags table
+        // crosswords_tags table
         $this->forge->addField([
             'crossword_id' => [
                 'type' => 'INT',
@@ -173,10 +173,10 @@ class Setup extends Migration
         $this->forge->addPrimaryKey(['crossword_id', 'tag_id']);
         $this->forge->addForeignKey('crossword_id', 'crosswords', 'id', 'CASCADE', 'CASCADE');
         $this->forge->addForeignKey('tag_id', 'tags', 'id', 'CASCADE', 'CASCADE');
-		$this->forge->createTable('crosswords_tags', true);
-		
+        $this->forge->createTable('crosswords_tags', true);
+        
         // comments table
-		$this->forge->addField([
+        $this->forge->addField([
             'id' => [
                 'type' => 'INT',
                 'constraint' => 9,
@@ -206,10 +206,10 @@ class Setup extends Migration
         $this->forge->addPrimaryKey('id');
         $this->forge->addForeignKey('user_id', 'users', 'id', 'CASCADE', 'CASCADE');
         $this->forge->addForeignKey('crossword_id', 'crosswords', 'id', 'CASCADE', 'CASCADE');
-		$this->forge->createTable('comments', true);
-		
+        $this->forge->createTable('comments', true);
+        
         // users_favs table
-		$this->forge->addField([
+        $this->forge->addField([
             'user_id' => [
                 'type' => 'INT',
                 'constraint' => 9,
@@ -224,11 +224,11 @@ class Setup extends Migration
         $this->forge->addPrimaryKey(['user_id', 'crossword_id']);
         $this->forge->addForeignKey('user_id', 'users', 'id', 'CASCADE', 'CASCADE');
         $this->forge->addForeignKey('crossword_id', 'crosswords', 'id', 'CASCADE', 'CASCADE');
-		$this->forge->createTable('users_favs', true);
-		
+        $this->forge->createTable('users_favs', true);
+        
         // users_saves table
-		$this->forge->addField([
-		    'id' => [
+        $this->forge->addField([
+            'id' => [
                 'type' => 'INT',
                 'constraint' => 9,
                 'unsigned' => true,

@@ -66,8 +66,8 @@ class CommentController extends BaseController {
     }
 
     public function get() {
-	    $cid = $this->request->getGet('cid');
-	    if ($cid) {
+        $cid = $this->request->getGet('cid');
+        if ($cid) {
             $itemsCount = $this->commentModel->getCommentsForCount($cid);
             $pages = ceil($itemsCount / self::ITEMS_PER_PAGE) ?: 1;
             $currentPage = is_numeric($this->request->getGet('p')) ? floor($this->request->getGet('p')) : 1;
@@ -84,7 +84,7 @@ class CommentController extends BaseController {
             }
             return $this->response->setJSON(['comments' => $comments, 'totalPages' => $pages]);
         }
-	    return null;
+        return null;
     }
 
     public function delete() {

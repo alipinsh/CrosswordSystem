@@ -62,7 +62,7 @@ class CrosswordController extends BaseController {
 
         $crossword['user'] = $this->userModel->find($crossword['user_id'])['username'];
 
-		return view('crossword/page', [
+        return view('crossword/page', [
                 'crossword' => $crossword,
                 'favorited' => $favorited,
                 'isMine' => $isMine,

@@ -9,8 +9,8 @@ use App\Models\CrosswordModel;
 
 class HomeController extends BaseController
 {
-	public function index()
-	{
-		return view('home', ['latestCrosswords' => $this->crosswordModel->getCrosswordList(5)]);
-	}
+    public function index()
+    {
+        return view('home', ['latestCrosswords' => $this->crosswordModel->getCrosswordList(5)]);
+    }
 }

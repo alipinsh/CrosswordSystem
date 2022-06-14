@@ -6,8 +6,8 @@
 <?= view('_notifications') ?>
 
 <form id="forgot-password" method="POST" action="<?= site_url('forgot-password'); ?>" accept-charset="UTF-8"
-	onsubmit="submitButton.disabled = true; return true;">
-	<?= csrf_field() ?>
+    onsubmit="submitButton.disabled = true; return true;">
+    <?= csrf_field() ?>
     <p>
         <label><?= lang('Account.typeEmail') ?></label><br />
         <input required type="email" name="email" value="<?= old('email') ?>" />
