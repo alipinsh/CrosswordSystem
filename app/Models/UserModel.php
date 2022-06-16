@@ -8,6 +8,12 @@ namespace App\Models;
 use CodeIgniter\Model;
 
 class UserModel extends Model {
+    const GUEST_ROLE = 0;
+    const USER_ROLE = 1;
+    const SMALL_MOD_ROLE = 2;
+    const BIG_MOD_ROLE = 3;
+    CONST ADMIN_ROLE = 4;
+
     protected $table = 'users';
     protected $primaryKey = 'id';
 

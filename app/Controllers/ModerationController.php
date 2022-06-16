@@ -95,7 +95,7 @@ class ModerationController extends BaseController
         $reportText = $this->request->getPost('report_text');
         $reportText = clean_text($reportText);
 
-        if (!strlen($reportText)) {
+        if (!mb_strlen($reportText)) {
             return $this->response->setJSON(['error' => 'text can not be blank']);
         }
 
