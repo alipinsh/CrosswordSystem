@@ -14,10 +14,10 @@ class AccountController extends BaseController {
     protected $image;
 
     public function __construct() {
-        $this->image = Services::image();
+        $this->image = service('image');
         helper(['text', 'mail']);
     }
-    
+
     public function account() {
         if (!$this->session->get('userData.id')) {
             return redirect()->to('/login');
@@ -102,8 +102,8 @@ class AccountController extends BaseController {
         }
 
         $this->session->push('userData', ['new_email' => $updatedUser['new_email']]);
-        send_mail($updatedUser['new_email'], lang('Account.confirmEmail'), 'email/confirmation', $updatedUser['auth_code']);
-        send_mail($user['email'], lang('Account.emailUpdateRequest'), 'email/notification', []);
+        send_mail($updatedUser['new_email'], lang('Account.confirmEmail'), 'confirmation', $updatedUser['auth_code']);
+        send_mail($user['email'], lang('Account.emailUpdateRequest'), 'notification', []);
         return redirect()->to('/account')->with('success', lang('Account.emailUpdateStarted'));
     }
     

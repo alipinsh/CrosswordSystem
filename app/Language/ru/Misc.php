@@ -1,11 +1,10 @@
 <?php
 
 return [
-    'notFound' => 'Page not found',
-    'search' => 'Search',
-    'allTags' => 'All tags',
-    'reports' => 'Reports',
-    'none' => 'None',
-    'show' => 'Show',
-    'hide' => 'Hide'
+    'notFound' => 'Страница не найдена',
+    'search' => 'Поиск',
+    'allTags' => 'Все теги',
+    'none' => 'Ничего',
+    'show' => 'Показать',
+    'hide' => 'Скрыть'
 ];

@@ -7,9 +7,10 @@ use Config\Services;
 
 if (!function_exists('send_mail')) {
     function send_mail($to, $subject, $viewName, $viewVars) {
-        $htmlMessage = view($viewName, $viewVars);
+        $locale = service('request')->getLocale();
+        $htmlMessage = view('email/' . $locale . '/' . $viewName, $viewVars);
 
-        $email = Services::email(null, true);
+        $email = service('mail');
         $email->initialize([
             'mailType' => 'html'
         ]);

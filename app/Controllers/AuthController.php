@@ -40,7 +40,7 @@ class AuthController extends BaseController
                 return redirect()->back()->withInput()->with('errors', $this->userModel->errors());
             }
 
-            send_mail($newUser['email'], lang('Account.registration'), 'email/activation', ['hash' => $newUser['auth_code']]);
+            send_mail($newUser['email'], lang('Account.registration'), 'activation', ['hash' => $newUser['auth_code']]);
             return redirect()->to('/login')->with('success', lang('Account.registrationSuccess'));
         }
         if ($this->session->get('userData.id')) {
@@ -125,7 +125,7 @@ class AuthController extends BaseController
                 'auth_code' => $reset_code, 
                 'code_expires' => date('Y-m-d H:i:s', time() + HOUR)
             ]);
-            send_mail($this->request->getPost('email'), lang('Account.passwordResetRequest'), 'email/reset', ['hash' => $reset_code]);
+            send_mail($this->request->getPost('email'), lang('Account.passwordResetRequest'), 'reset', ['hash' => $reset_code]);
             return redirect()->back()->with('success', lang('Account.forgottenPasswordEmail'));
         }
         if ($this->session->get('userData.id')) {

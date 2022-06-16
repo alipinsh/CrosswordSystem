@@ -13,5 +13,10 @@ return [
     'hasReports' => 'This crossword is reported!',
     'postReason' => 'Send reason',
     'hideNotice' => 'Your crossword got privated by moderation team',
-    'deleteNotice' => 'Your crossword got deleted by moderation team'
+    'deleteNotice' => 'Your crossword got deleted by moderation team',
+    'crosswordReports' => 'Crossword reports',
+    'commentReports' => 'Comment reports',
+    'deleteComment' => 'Delete comment',
+    'freeComment' => 'Free comment from reports',
+    'allUsers' => 'All users'
 ];

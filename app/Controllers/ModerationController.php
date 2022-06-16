@@ -72,11 +72,11 @@ class ModerationController extends BaseController
             case 'hide':
                 $crossword['is_public'] = false;
                 $this->crosswordModel->save($crossword);
-                send_mail($userEmail, lang('Moderation.hideNotice'), 'email/hide_reason', ['crosswordName' => $crosswordName, 'reason' => $reasonText]);
+                send_mail($userEmail, lang('Moderation.hideNotice'), 'hide_reason', ['crosswordName' => $crosswordName, 'reason' => $reasonText]);
                 return $this->response->setJSON(['success' => 'crossword hidden']);
             case 'delete':
                 $this->crosswordModel->deleteById($crosswordId);
-                send_mail($userEmail, lang('Moderation.deleteNotice'), 'email/delete_reason', ['crosswordName' => $crosswordName, 'reason' => $reasonText]);
+                send_mail($userEmail, lang('Moderation.deleteNotice'), 'delete_reason', ['crosswordName' => $crosswordName, 'reason' => $reasonText]);
                 return $this->response->setJSON(['success' => 'crossword deleted']);
             default:
                 break;

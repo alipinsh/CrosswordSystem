@@ -1,9 +1,9 @@
 <?php
 
 return [
-    'welcomeMessageGuest' => 'Welcome to the Crossword System!',
+    'welcomeMessageGuest' => 'Laipni lūgti Krustvārdu mīklu sistēmā!',
     'welcomeMessageUser' => 'Hello, {0}!',
-    'latestCrosswords' => 'Latest Crosswords',
-    'viewAllCrosswords' => 'View all crosswords',
-    'viewAllTags' => 'View all tags'
+    'latestCrosswords' => 'Jaunākie krustvārdu mīklas',
+    'viewAllCrosswords' => 'Apskatīt visus krustvārdu mīklas',
+    'viewAllTags' => 'Apskatīt visas krustvārdu zīmes'
 ];
