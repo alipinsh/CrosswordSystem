@@ -1,6 +1,6 @@
 <?= $this->extend('base') ?>
 <?= $this->section('main') ?>
-<h1><?= lang('Misc.reports') ?></h1>
+<h1><?= lang('Moderation.crosswordReports') ?></h1>
 <?php foreach ($groupedReports as $crosswordId => $crossword): ?>
 <div class="reports-block">
     <div class="report-title">

@@ -5,7 +5,7 @@
 
 namespace App\Controllers;
 
-use App\Models\ReportModel;
+use App\Models\CrosswordReportModel;
 use Config\Services;
 use App\Models\CrosswordModel;
 use App\Models\UserModel;
@@ -17,12 +17,12 @@ class CrosswordController extends BaseController {
     private const ITEMS_PER_PAGE = 50;
 
     protected $tagModel;
-    protected $reportModel;
+    protected $crosswordReportModel;
     protected $saveModel;
 
     public function __construct() {
         $this->tagModel = new TagModel();
-        $this->reportModel = new ReportModel();
+        $this->crosswordReportModel = new CrosswordReportModel();
         $this->saveModel = new SaveModel();
         helper(['text']);
     }
@@ -59,7 +59,7 @@ class CrosswordController extends BaseController {
         }
 
         $isModerator = $this->session->get('userData.role') == 2;
-        $hasReports = $isModerator ? boolval(count($this->reportModel->getReportList())) : false;
+        $hasReports = $isModerator ? boolval(count($this->crosswordReportModel->getReportList())) : false;
 
         $crossword['user'] = $this->userModel->find($crossword['user_id'])['username'];
 

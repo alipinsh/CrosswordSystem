@@ -258,7 +258,7 @@ class Setup extends Migration
         $this->forge->addForeignKey('crossword_id', 'crosswords', 'id', 'CASCADE', 'CASCADE');
         $this->forge->createTable('users_saves', true);
 
-        // reports table
+        // crosswords reports table
         $this->forge->addField([
             'id' => [
                 'type' => 'INT',
@@ -277,7 +277,25 @@ class Setup extends Migration
         ]);
         $this->forge->addPrimaryKey('id');
         $this->forge->addForeignKey('crossword_id', 'crosswords', 'id', 'CASCADE', 'CASCADE');
-        $this->forge->createTable('reports', true);
+        $this->forge->createTable('crosswords_reports', true);
+
+        // comments reports table
+        $this->forge->addField([
+            'id' => [
+                'type' => 'INT',
+                'constraint' => 9,
+                'unsigned' => true,
+                'auto_increment' => true,
+            ],
+            'comment_id' => [
+                'type' => 'INT',
+                'constraint' => 9,
+                'unsigned' => true
+            ]
+        ]);
+        $this->forge->addPrimaryKey('id');
+        $this->forge->addForeignKey('comment_id', 'comments', 'id', 'CASCADE', 'CASCADE');
+        $this->forge->createTable('comments_reports', true);
     }
 
     public function down()

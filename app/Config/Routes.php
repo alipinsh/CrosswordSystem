@@ -1,5 +1,7 @@
 <?php namespace Config;
 
+use App\Controllers\ModerationController;
+
 // Create a new instance of our RouteCollection class.
 $routes = Services::routes();
 
@@ -50,8 +52,15 @@ $routes->post('change-password', 'AccountController::changePassword');
 
 $routes->post('upload-image', 'AccountController::uploadImage');
 
+$routes->post('settings', 'AccountController::changeSettings');
+
 $routes->get('account', 'AccountController::account');
 $routes->get('profile/(:segment)', 'AccountController::profile/$1');
+
+$routes->get('history', 'AccountController::crosswordHistory');
+
+$routes->get('language', 'LanguageController::languagePage');
+$routes->post('language', 'LanguageController::changeLanguage');
 
 $routes->get('crossword', 'CrosswordController::view');
 $routes->get('crossword/(:num)', 'CrosswordController::view/$1');
@@ -80,10 +89,20 @@ $routes->post('saves/save', 'SaveController::save');
 $routes->post('saves/delete', 'SaveController::deleteSave');
 $routes->get('saves', 'SaveController::savesList');
 
-$routes->get('moderation', 'ModerationController::viewReports');
-$routes->post('moderation/action', 'ModerationController::action');
-$routes->post('moderation/free', 'ModerationController::free');
-$routes->post('moderation/report', 'ModerationController::sendReport');
+$routes->get('moderation/user', 'ModerationController::viewUsers');
+$routes->post('moderation/user/switch', 'ModerationController::switchRoleUser');
+$routes->post('moderation/user/delete', 'ModerationController::deleteUser');
+
+$routes->get('moderation/crossword', 'ModerationController::viewReportsCrossword');
+$routes->post('moderation/crossword/action', 'ModerationController::actionCrossword');
+$routes->post('moderation/crossword/free', 'ModerationController::freeCrossword');
+$routes->post('moderation/crossword/report', 'ModerationController::sendReportCrossword');
+
+$routes->get('moderation/comment', 'ModerationController::viewReportsComment');
+$routes->post('moderation/comment/action', 'ModerationController::actionComment');
+$routes->post('moderation/comment/free', 'ModerationController::freeComment');
+$routes->post('moderation/comment/report', 'ModerationController::sendReportComment');
+
 
 /**
  * --------------------------------------------------------------------

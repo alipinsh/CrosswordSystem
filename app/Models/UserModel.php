@@ -12,7 +12,15 @@ class UserModel extends Model {
     const USER_ROLE = 1;
     const SMALL_MOD_ROLE = 2;
     const BIG_MOD_ROLE = 3;
-    CONST ADMIN_ROLE = 4;
+    const ADMIN_ROLE = 4;
+
+    const ROLE_NAMES = [
+        self::GUEST_ROLE => 'Guest',
+        self::USER_ROLE => 'User',
+        self::SMALL_MOD_ROLE => 'Small Mod',
+        self::BIG_MOD_ROLE => 'Big Mod',
+        self::ADMIN_ROLE => 'Admin'
+    ];
 
     protected $table = 'users';
     protected $primaryKey = 'id';

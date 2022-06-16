@@ -158,7 +158,7 @@
 <script src="/js/report.js"></script>
 <script src="/js/comment.js"></script>
 <?php if ($isModerator): ?>
-<script src="/js/moderation.js"></script>
+<script src="/js/crossword_moderation.js"></script>
 <?php endif; ?>
 
 <?= $this->endSection() ?>

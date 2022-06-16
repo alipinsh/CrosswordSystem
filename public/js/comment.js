@@ -7,11 +7,6 @@ var moreCommentsButton = document.querySelector('button#more-comments');
 var loadedCommentsPage = 0;
 var totalPages = 0;
 
-function lengthInUtf8Bytes(str) {
-    var m = encodeURIComponent(str).match(/%[89ABab]/g);
-    return str.length + (m ? m.length : 0);
-}
-
 commentForm.addEventListener('submit', function (e) {
     e.preventDefault();
 
@@ -23,7 +18,7 @@ commentForm.addEventListener('submit', function (e) {
         return;
     }
 
-    if (lengthInUtf8Bytes(commentInput.value) > 65535) {
+    if (commentInput.value.length > 65535) {
         commentError.innerText = lang('tooLongMessage');
         return;
     }
@@ -110,6 +105,26 @@ function renderEditForm(text) {
     return editForm;
 }
 
+var reportComment = function(e) {
+    e.currentTarget.disabled = true;
+
+    var form = new FormData();
+    form.append('comment_id', e.currentTarget.parentElement.getAttribute('data-comment'));
+
+    var request = new XMLHttpRequest();
+    request.open('POST', '/moderation/comment/report', true);
+
+    request.onload = function() {
+        if (this.status >= 200 && this.status < 400) {
+            
+        } else {
+            console.log('error');
+        }
+    };
+
+    request.send(form);
+};
+
 var editComment = function(e) {
     e.preventDefault();
 
@@ -158,9 +173,14 @@ function createCommentElement(data) {
         '</div>' +
         '</div>';
 
+    var commentActions = document.createElement('div');
+    commentActions.classList.add('comment-actions');
+    var reportButton = document.createElement('button');
+    reportButton.classList.add('report-button');
+    reportButton.addEventListener('click', reportComment);
+    reportButton.innerText = lang('report');
+
     if (data.editable) {
-        var commentActions = document.createElement('div');
-        commentActions.classList.add('comment-actions');
         var editButton = document.createElement('button');
         editButton.classList.add('edit-button');
         editButton.addEventListener('click', editComment);
@@ -171,8 +191,9 @@ function createCommentElement(data) {
         deleteButton.addEventListener('click', deleteComment);
         deleteButton.innerText = lang('delete');
         commentActions.appendChild(deleteButton);
-        comment.appendChild(commentActions);
     }
+
+    comment.appendChild(commentActions);
 
     return comment;
 }

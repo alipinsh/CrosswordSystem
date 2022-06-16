@@ -1,14 +1,14 @@
 <?php
 /*
- * Problēmas paziņojuma modelis.
+ * Mīklas problēmas paziņojuma modelis.
  */
 
 namespace App\Models;
 
 use CodeIgniter\Model;
 
-class ReportModel extends Model {
-    protected $table = 'reports';
+class CrosswordReportModel extends Model {
+    protected $table = 'crosswords_reports';
     protected $primaryKey = 'id';
 
     protected $returnType = 'array';
@@ -20,13 +20,13 @@ class ReportModel extends Model {
     public function getReportList() {
         $builder = $this->db->table($this->table);
         $builder->select([
-            'reports.crossword_id',
+            'crosswords_reports.crossword_id',
             'crosswords.title',
             'crosswords.is_public',
-            'reports.report'
+            'crosswords_reports.report'
         ]);
-        $builder->join('crosswords', 'crosswords.id = reports.crossword_id');
-        $builder->orderBy('reports.id', 'DESC');
+        $builder->join('crosswords', 'crosswords.id = crosswords_reports.crossword_id');
+        $builder->orderBy('crosswords_reports.id', 'DESC');
 
         return $builder->get()->getResultArray();
     }
