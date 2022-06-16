@@ -135,6 +135,10 @@ class Setup extends Migration
             ],
             'tags' => [
                 'type' => 'TEXT'
+            ],
+            'language' => [
+                'type' => 'CHAR',
+                'constraint' => 2
             ]
         ]);
         $this->forge->addPrimaryKey('id');

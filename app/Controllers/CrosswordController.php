@@ -93,8 +93,13 @@ class CrosswordController extends BaseController {
             return $this->response->setJSON(['error' => 'please log in']);
         }
 
+        $language = $this->request->getPost('language');
+        if (!in_array($language, ['en', 'ru', 'lv'])) {
+            return $this->response->setJSON(['error' => 'invalid language']);
+        }
+
         $crosswordData = json_decode($this->request->getPost('crossword_data'), true);
-        if (!$this->crosswordModel->validateCrosswordData($crosswordData)) {
+        if (!$this->crosswordModel->validateCrosswordData($crosswordData, $language)) {
             return $this->response->setJSON(['error' => 'problem with crossword data']);
         }
 
@@ -128,7 +133,8 @@ class CrosswordController extends BaseController {
             'data' => json_encode($crosswordData),
             'user_id' => $userId,
             'is_public' => $this->request->getPost('is_public') ? 1 : 0,
-            'tags' => $tagsText
+            'tags' => $tagsText,
+            'language' => $language
         ];
 
         $crosswordId = $this->request->getPost('id');

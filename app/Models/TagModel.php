@@ -37,7 +37,7 @@ class TagModel extends Model {
     public function validateTags(array &$tags) {
         foreach ($tags as $i => $tag) {
             $tags[$i] = trim($tag);
-            if (!preg_match('/^[0-9A-Za-z]+$/', $tag)) {
+            if (!preg_match('/^[abcdefghijklmnopqrstuvwxyzабвгдеёжзийклмнопрстуфхцчшщьыъэюяāčēģīķļņšūž]+$/', $tag)) {
                 return false;
             }
         }

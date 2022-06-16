@@ -57,8 +57,6 @@ $routes->post('settings', 'AccountController::changeSettings');
 $routes->get('account', 'AccountController::account');
 $routes->get('profile/(:segment)', 'AccountController::profile/$1');
 
-$routes->get('history', 'AccountController::crosswordHistory');
-
 $routes->get('language', 'LanguageController::languagePage');
 $routes->post('language', 'LanguageController::changeLanguage');
 

@@ -13,7 +13,13 @@ var questionPreview = document.querySelector('.question-preview');
 var horizontalQuestionsElement = document.querySelector('.horizontal-questions');
 var verticalQuestionsElement = document.querySelector('.vertical-questions');
 
-var crosswordId = null;
+var language = document.querySelector('.flag-icon img').alt;
+
+var ALLOWED_LETTERS = {
+    en: 'abcdefghijklmnopqrstuvwxyz',
+    ru: 'абвгдеёжзийклмнопрстуфхцчшщьыъэюя',
+    lv: 'aābcčdeēfgģhiījkķlļmnņoprsštuūvzž'
+};
 
 var CELL_WIDTH = 24;
 var CELL_HEIGHT = 24;
@@ -321,6 +327,8 @@ letterInput.addEventListener('keydown', function(e) {
     var x = selectedCell[X];
     var y = selectedCell[Y];
     var cellToSelect = null;
+    var letter = e.key.toLowerCase();
+
     if (e.keyCode === 37) {
         if (currentDirection !== HORIZONTAL) {
             currentDirection = HORIZONTAL;
@@ -397,34 +405,6 @@ letterInput.addEventListener('keydown', function(e) {
             clearWordHighlight();
             highlightWord();
         }
-    } else if (e.keyCode >= 65 && e.keyCode <= 90) {
-        inputLetter(getCell(x, y), String.fromCharCode(e.keyCode));
-        switch (currentDirection) {
-            case HORIZONTAL:
-                do {
-                    x++;
-                    if (x === crossword.size[WIDTH]) {
-                        x = 0
-                    }
-                    cellToSelect = getCell(x, y);
-                } while (cellToSelect.classList.contains('blocked'));
-                selectCell(cellToSelect);
-                clearWordHighlight();
-                highlightWord();
-                break;
-            case VERTICAL:
-                do {
-                    y++;
-                    if (y === crossword.size[HEIGHT]) {
-                        y = 0
-                    }
-                    cellToSelect = getCell(x, y);
-                } while (cellToSelect.classList.contains('blocked'));
-                selectCell(cellToSelect);
-                clearWordHighlight();
-                highlightWord();
-                break;
-        }
     } else if (e.keyCode === 8) {
         removeLetter(getCell(x, y));
         switch (currentDirection) {
@@ -453,7 +433,35 @@ letterInput.addEventListener('keydown', function(e) {
                 highlightWord();
                 break;
         }
-    }
+    } else if (ALLOWED_LETTERS.indexOf(letter) > -1) {
+        inputLetter(getCell(x, y), letter);
+        switch (currentDirection) {
+            case HORIZONTAL:
+                do {
+                    x++;
+                    if (x === crossword.size[WIDTH]) {
+                        x = 0
+                    }
+                    cellToSelect = getCell(x, y);
+                } while (cellToSelect.classList.contains('blocked'));
+                selectCell(cellToSelect);
+                clearWordHighlight();
+                highlightWord();
+                break;
+            case VERTICAL:
+                do {
+                    y++;
+                    if (y === crossword.size[HEIGHT]) {
+                        y = 0
+                    }
+                    cellToSelect = getCell(x, y);
+                } while (cellToSelect.classList.contains('blocked'));
+                selectCell(cellToSelect);
+                clearWordHighlight();
+                highlightWord();
+                break;
+        }
+    } 
 });
 
 function reveal(what) {

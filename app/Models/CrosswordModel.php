@@ -21,6 +21,12 @@ class CrosswordModel extends Model {
     const CREATED = 0;
     const FAVORITED = 1;
 
+    const ALLOWED_LETTERS = [
+        'en' => 'abcdefghijklmnopqrstuvwxyz',
+        'ru' => 'абвгдеёжзийклмнопрстуфхцчшщьыъэюя',
+        'lv' => 'aābcčdeēfgģhiījkķlļmnņoprsštuūvzž'
+    ];
+
     protected $table = 'crosswords';
     protected $primaryKey = 'id';
 
@@ -29,7 +35,8 @@ class CrosswordModel extends Model {
     protected $allowedFields = [
         'published_at', 'updated_at',
         'title', 'width', 'height',
-        'questions', 'favorites', 'is_public', 'data', 'user_id', 'tags'
+        'questions', 'favorites', 'is_public', 'data', 'user_id', 'tags',
+        'language'
     ];
 
     protected $useTimestamps = false;
@@ -49,7 +56,8 @@ class CrosswordModel extends Model {
             'crosswords.width',
             'crosswords.height',
             'crosswords.questions',
-            'crosswords.favorites'
+            'crosswords.favorites',
+            'crosswords.language'
         ]);
         $builder->where('is_public', true);
         $builder->orderBy('id', 'DESC');
@@ -79,7 +87,8 @@ class CrosswordModel extends Model {
             'crosswords.width',
             'crosswords.height',
             'crosswords.questions',
-            'crosswords.favorites'
+            'crosswords.favorites',
+            'crosswords.language'
         ]);
 
         $builder->where('crosswords.is_public', true);
@@ -129,7 +138,8 @@ class CrosswordModel extends Model {
             'crosswords.width',
             'crosswords.height',
             'crosswords.questions',
-            'crosswords.favorites'
+            'crosswords.favorites',
+            'crosswords.language'
         ]);
 
         $builder->where('crosswords.is_public', true);
@@ -168,7 +178,8 @@ class CrosswordModel extends Model {
             'crosswords.width',
             'crosswords.height',
             'crosswords.questions',
-            'crosswords.favorites'
+            'crosswords.favorites',
+            'crosswords.language'
         ]);
 
         $builder->where('crosswords.is_public', 1);
@@ -213,7 +224,8 @@ class CrosswordModel extends Model {
             'crosswords.width',
             'crosswords.height',
             'crosswords.questions',
-            'crosswords.favorites'
+            'crosswords.favorites',
+            'crosswords.language'
         ]);
 
         $builder->where('crosswords.is_public', false);
@@ -259,7 +271,7 @@ class CrosswordModel extends Model {
         return boolval($r);
     }
 
-    public function validateCrosswordData(array &$crosswordData) {
+    public function validateCrosswordData(array &$crosswordData, string $language) {
         // size check
         if (!(is_numeric($crosswordData['size'][self::WIDTH])
             && is_numeric($crosswordData['size'][self::HEIGHT]))) {
@@ -297,7 +309,7 @@ class CrosswordModel extends Model {
                 if (strlen($value[self::QUESTION]) > 2000) {
                     return false;
                 }
-                if (!preg_match('/^[a-z]+$/i', $value[self::ANSWER])) {
+                if (!preg_match('/^['+ self::ALLOWED_LETTERS[$language] +']+$/i', $value[self::ANSWER])) {
                     return false;
                 }
                 $question = trim($value[self::QUESTION]);

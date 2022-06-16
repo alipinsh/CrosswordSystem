@@ -5,7 +5,7 @@
     <title>Xword System</title>
     <link rel="stylesheet" href="/css/main.css">
     <?= $this->renderSection('additionalStyle') ?>
-    <script src="/js/translation/<?= config('App')->defaultLocale ?>.js"></script>
+    <script src="/js/translation/<?= service('request')->getLocale() ?>.js"></script>
 </head>
 <body>
     <?php echo view('header'); ?>

@@ -16,6 +16,14 @@
         <input type="text" id="title">
     </p>
     <p>
+        <label for="language"><?= lang('Crossword.language') ?></label>
+        <select name="language" id="language">
+            <option value="en" default>English</option>
+            <option value="ru">Русский</option>
+            <option value="lv">Latviešu</option>
+        </select>
+    </p>
+    <p>
         <label for="tags"><?= lang("Crossword.tags") ?></label>
         <textarea id="tags"></textarea>
     </p>

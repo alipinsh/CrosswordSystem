@@ -3,6 +3,7 @@ var deleteCrosswordButton = document.querySelector('input#delete');
 var yesDeleteButton = document.querySelector('input#yes-delete');
 var noDeleteButton = document.querySelector('input#no-delete');
 var titleForm = document.querySelector('input#title');
+var languageForm = document.querySelector('select#language');
 var tagsForm = document.querySelector('textarea#tags');
 var publicCheckbox = document.querySelector('input#is_public')
 var widthForm = document.querySelector('input#width');
@@ -40,6 +41,12 @@ var crosswordId = null;
 var overlaps = [];
 var modalVisible = false;
 
+var ALLOWED_LETTERS = {
+    en: 'abcdefghijklmnopqrstuvwxyz',
+    ru: 'абвгдеёжзийклмнопрстуфхцчшщьыъэюя',
+    lv: 'aābcčdeēfgģhiījkķlļmnņoprsštuūvzž'
+};
+
 var CELL_WIDTH = 24;
 var CELL_HEIGHT = 24;
 
@@ -63,6 +70,9 @@ var crossword = {
     questions: [{}, {}]
 }
 
+let answerRegex = null;
+let tagsRegex = new RegExp('^[' + ALLOWED_LETTERS.en + ALLOWED_LETTERS.ru + ALLOWED_LETTERS.lv + ',]+$');
+
 function isNumeric(str) {
     if (typeof str != "string") {
         return false;
@@ -74,13 +84,12 @@ function clamp(number, min, max) {
     return Math.min(Math.max(number, min), max);
 }
 
-function lengthInUtf8Bytes(str) {
-    var m = encodeURIComponent(str).match(/%[89ABab]/g);
-    return str.length + (m ? m.length : 0);
-}
-
 function replaceLetter(word, letter, pos) {
     return word.substring(0, pos) + letter + word.substring(pos + letter.length);
+}
+
+function updateAnswerRegex() {
+    answerRegex = new RegExp('^[' + ALLOWED_LETTERS[languageForm.value] + ']+$', 'i');
 }
 
 var cellOnClick = function (e) {
@@ -587,7 +596,7 @@ editModalOKButton.addEventListener('click', function (e) {
     } else if (editModalQuestion.value.length > 2000) {
         error.innerText = lang('tooLongQuestion');
         errored = true;
-    } else if (!/^[a-z]+$/i.test(editModalAnswer.value)) {
+    } else if (answerRegex.test(editModalAnswer.value)) {
         error.innerText = lang('onlyAZ');
         errored = true;
     } else if (currentDirection === HORIZONTAL && (selectedCell[X] + currentLength) > crossword.size[WIDTH]
@@ -672,13 +681,13 @@ saveButton.addEventListener('click', function (e) {
     if (titleForm.value === '') {
         infoError.innerText = lang('notBlankTitle');
         errored = true;
-    } else if (lengthInUtf8Bytes(titleForm.value.length) > 255) {
+    } else if (titleForm.value.length > 255) {
         infoError.innerText = lang('tooLongTitle');
         errored = true;
     } else if (tagsForm.value.length == 0) {
         infoError.innerText = lang('notEmptyTags');
         errored = true;
-    } else if (!/^[0-9a-z,]+$/.test(tagsForm.value)) {
+    } else if (!tagsRegex.test(tagsForm.value)) {
         infoError.innerText = lang('lettersAndCommaInTags');
         errored = true;
     } else if (tagsForm.value.length > 65535) {
@@ -696,6 +705,7 @@ saveButton.addEventListener('click', function (e) {
             form.append('id', crosswordId);
         }
         form.append('title', titleForm.value);
+        form.append('language', languageForm.value);
         form.append('tags', JSON.stringify(tagsForm.value.split(',')));
         form.append('is_public', publicCheckbox.checked ? 1 : 0);
         form.append('crossword_data', JSON.stringify(crossword));
@@ -755,12 +765,17 @@ if (deleteCrosswordButton) {
     });
 }
 
+languageForm.addEventListener('change', function (e) {
+    updateAnswerRegex();
+})
+
 document.addEventListener('DOMContentLoaded', function (e) {
-    var crosswordDataHolder = document.querySelector('#crossword-data')
+    var crosswordDataHolder = document.querySelector('#crossword-data');
     if (crosswordDataHolder) {
         var parsedData = JSON.parse(crosswordDataHolder.innerHTML);
         crosswordId = parseInt(parsedData.id);
         titleForm.value = parsedData.title;
+        languageForm.value = parsedData.language;
         tagsForm.value = parsedData.tags;
         if (parseInt(parsedData.is_public)) {
             publicCheckbox.checked = true;
@@ -768,6 +783,8 @@ document.addEventListener('DOMContentLoaded', function (e) {
         crossword = JSON.parse(parsedData.data);
         crosswordDataHolder.parentElement.removeChild(crosswordDataHolder);
     }
+
+    updateAnswerRegex();
 
     widthForm.value = crossword.size[WIDTH];
     heightForm.value = crossword.size[HEIGHT];

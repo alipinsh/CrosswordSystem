@@ -142,6 +142,10 @@ textarea {
     display: inline-block;
 }
 
+.flag-icon {
+    width: 32px;
+}
+
 .crossword-block {
     border: 1px solid #7b7b7b;
     padding: 8px;

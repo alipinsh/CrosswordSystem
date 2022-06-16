@@ -4,7 +4,7 @@
 <?php if (count($crosswords)): ?>
 <?php foreach ($crosswords as $c):?>
 <div class="crossword-block">
-    <div><a href="/crossword/<?= $c['id'] ?>"><?= $c['title'] ?></a></div>
+    <div><a href="/crossword/<?= $c['id'] ?>"><?= $c['title'] ?></a><span class="flag-icon"><img src="/img/flag/<?= $c['language'] ?>.svg"></span></div>
     <div><?= $c['width'] ?> x <?= $c['height'] ?></div>
     <div><?= lang("Crossword.questions", [$c['questions']]) ?></div>
 </div>
