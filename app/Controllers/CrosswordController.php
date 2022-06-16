@@ -108,7 +108,7 @@ class CrosswordController extends BaseController {
         }
 
         $tagsText = implode(',', $tags);
-        if (strlen($tagsText) > 65535) {
+        if (mb_strlen($tagsText) > 65535) {
             return $this->response->setJSON(['error' => 'way too many tags']);
         }
 
@@ -283,7 +283,7 @@ class CrosswordController extends BaseController {
     public function search($searchQuery = null) {
         $searchQuery = clean_text($searchQuery);
 
-        if (!strlen($searchQuery)) {
+        if (!mb_strlen($searchQuery)) {
             return view('not_found');
         }
 
