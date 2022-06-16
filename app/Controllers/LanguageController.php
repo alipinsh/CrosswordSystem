@@ -9,10 +9,6 @@ class LanguageController extends BaseController {
 
     protected $saveModel;
 
-    public function __construct() {
-
-    }
-
     public function languagePage() {
         return view('language', ['locale' => service('request')->getLocale()]);
     }

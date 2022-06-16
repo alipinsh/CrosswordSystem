@@ -30,7 +30,7 @@ class UserModel extends Model {
     protected $allowedFields = [
         'username', 'email', 'image', 'created_count', 'favorited_count', 'registered_on',
         'password', 'password_confirm',
-        'new_email', 'auth_code', 'code_expires', 'email_confirmed'
+        'new_email', 'auth_code', 'code_expires', 'email_confirmed', 'show_save_on_home'
     ];
 
     protected $useTimestamps = false;

@@ -193,4 +193,16 @@ class AccountController extends BaseController {
 
         return $this->response->setJSON(['error' => 'file format error!']);
     }
+
+    public function changePreferences() {
+        if (!$this->session->get('userData.id')) {
+            return redirect()->to('/login');
+        }
+
+        $showSaveOnHome = boolval($this->request->getPost('show_save_on_home'));
+        $this->userModel->update($this->session->get('userData.id'), ['show_save_on_home' => $showSaveOnHome]);
+        $this->session->set('userData.show_save_on_home', $showSaveOnHome);
+        
+        return redirect()->to('/account')->with('success', lang('Account.preferencesUpdateSuccess'));
+    }
 }

@@ -52,7 +52,7 @@ $routes->post('change-password', 'AccountController::changePassword');
 
 $routes->post('upload-image', 'AccountController::uploadImage');
 
-$routes->post('settings', 'AccountController::changeSettings');
+$routes->post('change-preferences', 'AccountController::changePreferences');
 
 $routes->get('account', 'AccountController::account');
 $routes->get('profile/(:segment)', 'AccountController::profile/$1');

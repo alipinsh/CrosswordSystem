@@ -18,10 +18,26 @@
 <?php if ($isMine): ?>
 <div class="account-config">
     <div class="account-config-options">
+        <button class="tab-button" data-for="#change-preferences-tab"><?= lang('Account.changePreferences') ?></button>
         <button class="tab-button" data-for="#change-picture-tab"><?= lang('Account.changePicture') ?></button>
         <button class="tab-button" data-for="#change-email-tab"><?= lang('Account.changeEmail') ?></button>
         <button class="tab-button" data-for="#change-password-tab"><?= lang('Account.changePassword') ?></button>
         <button id="logout" onclick="window.open('<?= site_url('logout') ?>', '_self')"><?= lang('Account.logout') ?></button>
+    </div>
+
+    <div id="change-preferences-tab">
+        <h2><?= lang('Account.changePreferences') ?></h2>
+        <form id="change-email" method="POST" action="<?= site_url('change-preferences'); ?>" accept-charset="UTF-8"
+            onsubmit="changePreferences.disabled = true; return true;">
+            <?= csrf_field() ?>
+            <p>
+                <input type="checkbox" id="show_save_on_home" name="show_save_on_home" <?= $user['show_save_on_home'] ?>>
+                <label for="show_save_on_home"><?= lang('Account.showSaveOnHome') ?></label>
+            </p>
+            <p>
+                <button name="changePreferences" type="submit"><?= lang('Account.update') ?></button>
+            </p>
+        </form>
     </div>
 
     <div id="change-picture-tab">

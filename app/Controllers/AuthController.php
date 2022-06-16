@@ -86,7 +86,8 @@ class AuthController extends BaseController
                 'username' => $user['username'],
                 'email' => $user['email'],
                 'image' => $user['image'],
-                'role' => $user['role']
+                'role' => $user['role'],
+                'show_save_on_home' => $user['show_save_on_home']
             ]);
 
             return redirect()->to('/account');

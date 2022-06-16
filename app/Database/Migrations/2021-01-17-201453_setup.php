@@ -76,6 +76,11 @@ class Setup extends Migration
                 'type' => 'BOOLEAN', 
                 'null' => false, 
                 'default' => 0
+            ],
+            'show_save_on_home' => [
+                'type' => 'BOOLEAN',
+                'null' => 'false',
+                'default' => 0
             ]
         ]);
         $this->forge->addPrimaryKey('id');

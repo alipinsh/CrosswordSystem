@@ -38,7 +38,8 @@ class SaveModel extends Model {
             'crosswords.title',
             'crosswords.width',
             'crosswords.height',
-            'crosswords.questions'
+            'crosswords.questions',
+            'crosswords.language'
         ]);
 
         $builder->join('crosswords', 'crosswords.id = users_saves.crossword_id');
