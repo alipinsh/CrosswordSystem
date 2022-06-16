@@ -15,6 +15,7 @@ class CommentController extends BaseController {
 
     public function __construct() {
         $this->commentModel = new CommentModel();
+        helper(['text']);
     }
 
     public function post() {
@@ -28,17 +29,13 @@ class CommentController extends BaseController {
 
         $commentText = $this->request->getPost('comment_text');
 
-        if (strlen($commentText) > 65535) {
+        if (mb_strlen($commentText) > 65535) {
             return $this->response->setJSON(['error' => 'comment too long']);
         }
 
-        $commentText = trim($commentText);
-        $commentText = preg_replace('/  +/', ' ', $commentText);
-        $commentText = preg_replace('/(?:\r?\n|\r){2,}/', "\n", $commentText);
-        $commentText = preg_replace('/[ \t]+/', ' ', $commentText);
-        $commentText = htmlspecialchars($commentText);
+        $commentText = clean_text($commentText);
 
-        if (!strlen($commentText)) {
+        if (!mb_strlen($commentText)) {
             return $this->response->setJSON(['error' => 'text can not be blank']);
         }
 
@@ -114,17 +111,13 @@ class CommentController extends BaseController {
 
         $commentText = $this->request->getPost('edited_text');
 
-        if (strlen($commentText) > 65535) {
+        if (mb_strlen($commentText) > 65535) {
             return $this->response->setJSON(['error' => 'comment too long']);
         }
 
-        $commentText = trim($commentText);
-        $commentText = preg_replace('/  +/', ' ', $commentText);
-        $commentText = preg_replace('/(?:\r?\n|\r){2,}/', "\n", $commentText);
-        $commentText = preg_replace('/[ \t]+/', ' ', $commentText);
-        $commentText = htmlspecialchars($commentText);
+        $commentText = clean_text($commentText);
 
-        if (!strlen($commentText)) {
+        if (!mb_strlen($commentText)) {
             return $this->response->setJSON(['error' => 'text can not be blank']);
         }
 

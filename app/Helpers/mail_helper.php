@@ -9,7 +9,7 @@ if (!function_exists('send_mail')) {
     function send_mail($to, $subject, $viewName, $viewVars) {
         $htmlMessage = view($viewName, $viewVars);
 
-        $email = Services::email();
+        $email = Services::email(null, true);
         $email->initialize([
             'mailType' => 'html'
         ]);

@@ -14,10 +14,10 @@ class ModerationController extends BaseController
 
     public function __construct() {
         $this->reportModel = new ReportModel();
-        helper(['mail']);
+        helper(['text', 'mail']);
     }
 
-    public function viewReports()
+    public function viewReportsCrosswords()
     {
         if (!$this->session->get('userData.id')) {
             return redirect()->to('/login');
@@ -36,7 +36,7 @@ class ModerationController extends BaseController
         return view('moderation', ['groupedReports' => $groupedReports]);
     }
 
-    public function action() {
+    public function actionCrossword() {
         if (!$this->session->get('userData.id') || $this->session->get('userData.role') != 2) {
             return $this->response->setJSON(['error' => 'not a mod!']);
         }
@@ -48,13 +48,9 @@ class ModerationController extends BaseController
         }
 
         $reasonText = $this->request->getPost('reason_text');
-        $reasonText = trim($reasonText);
-        $reasonText = preg_replace('/  +/', ' ', $reasonText);
-        $reasonText = preg_replace('/(?:\r?\n|\r){2,}/', "\n", $reasonText);
-        $reasonText = preg_replace('/[ \t]+/', ' ', $reasonText);
-        $reasonText = htmlspecialchars($reasonText);
+        $reasonText = clean_text($reasonText);
 
-        if (!strlen($reasonText)) {
+        if (!mb_strlen($reasonText)) {
             return $this->response->setJSON(['error' => 'text can not be blank']);
         }
 
@@ -80,7 +76,7 @@ class ModerationController extends BaseController
         return $this->response->setJSON(['error' => 'no action defined']);
     }
 
-    public function free() {
+    public function freeCrossword() {
         if (!$this->session->get('userData.id') || $this->session->get('userData.role') != 2) {
             return $this->response->setJSON(['error' => 'not a mod!']);
         }
@@ -95,13 +91,9 @@ class ModerationController extends BaseController
         return $this->response->setJSON(['success' => 'freed from reports']);
     }
 
-    public function sendReport() {
+    public function sendReportCrossrod() {
         $reportText = $this->request->getPost('report_text');
-        $reportText = trim($reportText);
-        $reportText = preg_replace('/  +/', ' ', $reportText);
-        $reportText = preg_replace('/(?:\r?\n|\r){2,}/', "\n", $reportText);
-        $reportText = preg_replace('/[ \t]+/', ' ', $reportText);
-        $reportText = htmlspecialchars($reportText);
+        $reportText = clean_text($reportText);
 
         if (!strlen($reportText)) {
             return $this->response->setJSON(['error' => 'text can not be blank']);

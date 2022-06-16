@@ -24,6 +24,7 @@ class CrosswordController extends BaseController {
         $this->tagModel = new TagModel();
         $this->reportModel = new ReportModel();
         $this->saveModel = new SaveModel();
+        helper(['text']);
     }
 
     public function view($id = null) {
@@ -98,10 +99,7 @@ class CrosswordController extends BaseController {
         }
 
         $title = trim($this->request->getPost('title'));
-        $title = preg_replace('/  +/', ' ', $title);
-        $title = preg_replace('/(?:\r?\n|\r){2,}/', ' ', $title);
-        $title = preg_replace('/[ \t]+/', ' ', $title);
-        $title = htmlspecialchars($title);
+        $title = clean_text($title);
 
         $tags = json_decode(mb_strtolower($this->request->getPost('tags')), true);
 
@@ -283,11 +281,7 @@ class CrosswordController extends BaseController {
     }
 
     public function search($searchQuery = null) {
-        $searchQuery = trim($searchQuery);
-        $searchQuery = preg_replace('/  +/', ' ', $searchQuery);
-        $searchQuery = preg_replace('/(?:\r?\n|\r){2,}/', "\n", $searchQuery);
-        $searchQuery = preg_replace('/[ \t]+/', ' ', $searchQuery);
-        $searchQuery = htmlspecialchars($searchQuery);
+        $searchQuery = clean_text($searchQuery);
 
         if (!strlen($searchQuery)) {
             return view('not_found');
