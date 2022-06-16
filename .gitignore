@@ -68,6 +68,11 @@ writable/**/*.sqlite
 
 php_errors.log
 
+pub/img/avatar/*
+!pub/img/avatar/default.png
+pub/img/avatar/min/*
+!pub/img/avatar/min/default.png
+
 #-------------------------
 # User Guide Temp Files
 #-------------------------
