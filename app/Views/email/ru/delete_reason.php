@@ -1,4 +1,4 @@
-<p>Hello!</p>
-<p>Your crossword (<?= $crosswordName ?>) got deleted, because of the reason:</p>
+<p>Здравствуйте!</p>
+<p>Ваш кроссворд (<?= $crosswordName ?>) была удалён, по причине:</p>
 <p><?= $reason ?></p>
-<p>If questions arise, contact the moderation team!</p>
+<p>Если возникнут вопросы, обращайтесь к команде модераторов!</p>

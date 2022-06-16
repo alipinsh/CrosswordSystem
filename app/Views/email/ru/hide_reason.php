@@ -1,4 +1,4 @@
-<p>Hello!</p>
-<p>Your crossword (<?= $crosswordName ?>) got private, because of the reason:</p>
+<p>Здравствуйте!</p>
+<p>Ваш кроссворд (<?= $crosswordName ?>) стал приватным, по причине:</p>
 <p><?= $reason ?></p>
-<p>Fix the problem mentioned in the reason. If questions arise, contact the moderation team!</p>
+<p>Устраните проблему, указанную в причине. Если возникнут вопросы, свяжитесь с командой модераторов!</p>

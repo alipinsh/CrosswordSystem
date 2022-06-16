@@ -1,4 +1,4 @@
-<p>Dear member of Crossword System,</p>
-<p>Please click the following link to confirm your new e-mail address</p>
+<p>Cienījamais Krustvārdu mīklu sistēmas dalībnieks,</p>
+<p>Lūdzu, noklikšķiniet uz šādas saites, lai apstiprinātu savu jauno e-pasta adresi.</p>
 <p><a href="<?= base_url('confirm-email') . '?token=' . $hash ?>"><?= base_url('confirm-email') . '?token=' . $hash ?></a></p>
-<p>If you didn't request this, just ignore this email.</p>
+<p>Ja neesat to pieprasījis, ignorējiet šo e-pastu.</p>

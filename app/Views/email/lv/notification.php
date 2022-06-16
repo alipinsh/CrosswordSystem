@@ -1,2 +1,2 @@
-<p>An e-mail update was requested in Crossword System!</p>
-<p>If you didn't request this change, please contact us as soon as possible!</p>
+<p>Tika pieprasīts e-pasta atjauninājums Krustvārdu mīklu sistēmā!</p>
+<p>Ja neesat pieprasījis šīs izmaiņas, lūdzu, sazinieties ar mums pēc iespējas ātrāk!</p>

@@ -1,4 +1,4 @@
-<p>Hello!</p>
-<p>Your crossword (<?= $crosswordName ?>) got private, because of the reason:</p>
+<p>Sveiki!</p>
+<p>Jūsu krustvārdu mīkla (<?= $crosswordName ?>) kluva par privātu, tāda iemesla dēļ:</p>
 <p><?= $reason ?></p>
-<p>Fix the problem mentioned in the reason. If questions arise, contact the moderation team!</p>
+<p>Novērst iemeslā minēto problēmu. Ja rodas jautājumi, sazinieties ar moderatoru komandu!</p>

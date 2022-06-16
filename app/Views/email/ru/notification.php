@@ -1,2 +1,2 @@
-<p>An e-mail update was requested in Crossword System!</p>
-<p>If you didn't request this change, please contact us as soon as possible!</p>
+<p>В системе "Кроссворд" было запрошено обновление по электронной почте!</p>
+<p>Если вы не запрашивали это изменение, пожалуйста, свяжитесь с нами как можно скорее!</p>

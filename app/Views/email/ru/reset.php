@@ -1,4 +1,4 @@
-<p>A password update was requested in Crossword System!</p>
-<p>Please click the following link to change your password</p>
+<p>В системе "Кроссворд" было запрошено обновление пароля!</p>
+<p>Пожалуйста, нажмите на следующую ссылку, чтобы изменить свой пароль</p>
 <p><a href="<?= base_url('reset-password') . '?token=' . $hash ?>"><?= base_url('reset-password') . '?token=' . $hash ?></a></p>
-<p>If you didn't request this change, just ignore this email.</p>
+<p>Если вы не запрашивали это изменение, просто проигнорируйте это письмо.</p>

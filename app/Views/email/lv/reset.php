@@ -1,4 +1,4 @@
-<p>A password update was requested in Crossword System!</p>
-<p>Please click the following link to change your password</p>
+<p>Tika pieprasīta paroles atjaunināšana Krustvārdu mīklu sistēmā!</p>
+<p>Lai mainītu paroli, noklikšķiniet uz šādas saites</p>
 <p><a href="<?= base_url('reset-password') . '?token=' . $hash ?>"><?= base_url('reset-password') . '?token=' . $hash ?></a></p>
-<p>If you didn't request this change, just ignore this email.</p>
+<p>Ja neesat pieprasījis šīs izmaiņas, ignorējiet šo e-pastu.</p>

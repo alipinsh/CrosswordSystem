@@ -1,4 +1,4 @@
-<p>Thank you for signing up in Crossword System!</p>
-<p>Click the following link to activate your account</p>
+<p>Спасибо, что зарегистрировались в системе "Кроссворд"!</p>
+<p>Нажмите на следующую ссылку, чтобы активировать свою учетную запись</p>
 <p><a href="<?= base_url('activate-account') . '?token=' . $hash ?>"><?= base_url('activate-account') . '?token=' . $hash ?></a></p>
-<p>If you didn't register, just ignore this email.</p>
+<p>Если вы не зарегистрировались, просто проигнорируйте это письмо.</p>
