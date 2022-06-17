@@ -37,7 +37,7 @@ class ModerationController extends BaseController
         return view('moderation', ['role' => $this->session->get('userData.role')]);
     }
 
-    public function viewReportsCrosswords()
+    public function viewReportsCrossword()
     {
         if (!$this->session->get('userData.id')) {
             return redirect()->to('/login');
