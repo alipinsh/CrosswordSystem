@@ -5,5 +5,6 @@ return [
     'welcomeMessageUser' => 'Hello, {0}!',
     'latestCrosswords' => 'Latest Crosswords',
     'viewAllCrosswords' => 'View all crosswords',
-    'viewAllTags' => 'View all tags'
+    'viewAllTags' => 'View all tags',
+    'latestSaves' => 'Latest saves'
 ];

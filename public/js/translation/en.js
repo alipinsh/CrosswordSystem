@@ -26,7 +26,8 @@ var STRINGS = {
     'notEmptyMessage': 'Message can\'t be empty',
     'tooLongMessage': 'Message too long!',
     'show': 'Show',
-    'hide': 'Hide'
+    'hide': 'Hide',
+    'report': 'Report'
 }
 
 function lang(string) {

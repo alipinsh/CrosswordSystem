@@ -37,7 +37,8 @@ class AccountController extends BaseController {
                 'createdCrosswords' =>
                     $this->crosswordModel->getCrosswordListByUser($userId, $this->crosswordModel::CREATED, 5),
                 'favoritedCrosswords' =>
-                    $this->crosswordModel->getCrosswordListByUser($userId, $this->crosswordModel::FAVORITED, 5)
+                    $this->crosswordModel->getCrosswordListByUser($userId, $this->crosswordModel::FAVORITED, 5),
+                'show_save_on_home' => $user['show_save_on_home']
             ],
             'isMine' => true
         ];
@@ -186,7 +187,7 @@ class AccountController extends BaseController {
 
             $user['image'] = $newFilename;
             $this->userModel->save($user);
-            $this->session->set('userData.image', $newFilename);
+            $this->session->push('userData', ['image' => $newFilename]);
 
             return $this->response->setJSON(['new_image' => $user['image']]);
         }
@@ -201,7 +202,7 @@ class AccountController extends BaseController {
 
         $showSaveOnHome = boolval($this->request->getPost('show_save_on_home'));
         $this->userModel->update($this->session->get('userData.id'), ['show_save_on_home' => $showSaveOnHome]);
-        $this->session->set('userData.show_save_on_home', $showSaveOnHome);
+        $this->session->push('userData', ['show_save_on_home' => $showSaveOnHome]);
         
         return redirect()->to('/account')->with('success', lang('Account.preferencesUpdateSuccess'));
     }

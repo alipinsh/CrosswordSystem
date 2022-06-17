@@ -6,5 +6,8 @@ return [
     'allTags' => 'All tags',
     'none' => 'None',
     'show' => 'Show',
-    'hide' => 'Hide'
+    'hide' => 'Hide',
+    'changeLanguage' => 'Change language',
+    'submit' => 'Submit',
+    'language' => 'Language'
 ];

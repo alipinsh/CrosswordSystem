@@ -31,7 +31,7 @@
             onsubmit="changePreferences.disabled = true; return true;">
             <?= csrf_field() ?>
             <p>
-                <input type="checkbox" id="show_save_on_home" name="show_save_on_home" <?= $user['show_save_on_home'] ?>>
+                <input type="checkbox" id="show_save_on_home" name="show_save_on_home" <?php if ($user['show_save_on_home']): echo 'checked'; endif; ?>>
                 <label for="show_save_on_home"><?= lang('Account.showSaveOnHome') ?></label>
             </p>
             <p>

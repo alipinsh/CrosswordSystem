@@ -17,6 +17,12 @@ main textarea {
     margin-bottom: 32px;
 }
 
+.info {
+    background-color: #a9ff9f;
+    padding: 8px;
+    margin: 8px 0;
+}
+
 .error,
 .info-error {
     background-color: #c46c71;

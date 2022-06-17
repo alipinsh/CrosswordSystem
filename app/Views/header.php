@@ -10,7 +10,7 @@
         </div>
         <div class="auth-container">
             <?php if (session('userData.id')): ?>
-                <?php if (session('userData.role') == 2): ?>
+                <?php if (session('userData.role') > 1): ?>
                 <a href="<?= site_url('moderation') ?>"><?= lang('Moderation.moderation') ?></a>
                 <?php endif; ?>
                 <a href="<?= site_url('saves') ?>"><?= lang('Account.saves') ?></a>

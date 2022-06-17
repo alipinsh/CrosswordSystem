@@ -6,5 +6,7 @@ return [
     'allTags' => 'Visas birkas',
     'none' => 'Nav',
     'show' => 'Parādīt',
-    'hide' => 'Paslēpt'
+    'hide' => 'Paslēpt',
+    'changeLanguage' => 'Mainīt valodu',
+    'submit' => 'Atsūtīt'
 ];

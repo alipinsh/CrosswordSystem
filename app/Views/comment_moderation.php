@@ -5,7 +5,7 @@
 <div class="reported-comment" data-comment="<?= $comment['comment_id'] ?>">
     <div class="comment-username"><strong><?= $comment['username'] ?></strong></div>
     <div class="comment-text"><?= $comment['text'] ?></div>
-    <a href="crossword/<?= $comment['crossword_id'] ?>"><?= lang('Misc.crosswordLink')?></a>
+    <a href="/crossword/<?= $comment['crossword_id'] ?>"><?= lang('Moderation.crosswordLink')?></a>
     <button class="free-button"><?= lang('Moderation.freeComment') ?></button>
     <button class="delete-button"><?= lang('Moderation.deleteComment') ?></button>
 </div>

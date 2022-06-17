@@ -7,15 +7,17 @@ var switchRoleUser = function (e) {
 
     var request = new XMLHttpRequest();
     var form = new FormData();
-    form.append('user_id', e.currentTarget.parentElement.getAttribute('data-user'));
+    form.append('user_id', e.currentTarget.parentElement.parentElement.getAttribute('data-user'));
     form.append('role_id', e.currentTarget.getAttribute('data-role'));
-    request.open('POST', '/moderation/user/delete', true);
+    request.open('POST', '/moderation/user/switch', true);
+
+    var buttonElement = e.currentTarget;
 
     request.onload = function() {
         if (this.status >= 200 && this.status < 400) {
             var data = JSON.parse(this.response);
-            e.currentTarget.parentElement.children[1].innerText = data['success'];
-            e.currentTarget.disabled = false;
+            buttonElement.parentElement.parentElement.children[1].innerText = data['success'];
+            buttonElement.disabled = false;
         } else {
             console.log('error');
         }
@@ -30,13 +32,14 @@ var deleteUser = function (e) {
 
     var request = new XMLHttpRequest();
     var form = new FormData();
-    form.append('user_id', e.currentTarget.parentElement.getAttribute('data-user'));
+    form.append('user_id', e.currentTarget.parentElement.parentElement.getAttribute('data-user'));
     request.open('POST', '/moderation/user/delete', true);
+
+    var buttonElement = e.currentTarget;
 
     request.onload = function() {
         if (this.status >= 200 && this.status < 400) {
-            var userToRemove = e.currentTarget.parentElement;
-            e.currentTarget.parentElement.parentElement.removeChild(userToRemove);
+            buttonElement.parentElement.parentElement.parentElement.removeChild(buttonElement.parentElement.parentElement);
         } else {
             console.log('error');
         }
@@ -46,9 +49,9 @@ var deleteUser = function (e) {
 };
 
 roleSwitchButtons.forEach(function(button) {
-    button.addEventListener(switchRoleUser);
+    button.addEventListener('click', switchRoleUser);
 });
 
 deleteButtons.forEach(function(button) {
-    button.addEventListener(deleteUser);
+    button.addEventListener('click', deleteUser);
 });

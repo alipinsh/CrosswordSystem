@@ -143,6 +143,10 @@ textarea {
 }
 
 .flag-icon {
+    margin-left: 3px;
+}
+
+.flag-icon img {
     width: 32px;
 }
 
@@ -168,6 +172,24 @@ textarea {
     margin-bottom: 8px;
 }
 
+.reported-comment {
+    padding: 8px;
+    margin-bottom: 16px;
+    border: 1px solid #7b7b7b;
+}
+
+.user {
+    margin-bottom: 16px;
+}
+
+.user .username {
+    font-weight: bold;
+}
+
+.role-switch-buttons {
+    margin-right: 16px;
+}
+
 .pagination {
     text-align: center;
 }
@@ -180,6 +202,16 @@ textarea {
     margin: 4px 8px;
     border: 1px solid #2e2c9b;
     cursor: pointer;
+}
+
+.save-block {
+    border: 1px solid #7b7b7b;
+    padding: 8px;
+    margin-bottom: 16px;
+}
+
+.delete-save-button-container {
+    text-align: right;
 }
 
 /*

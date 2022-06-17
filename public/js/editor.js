@@ -23,6 +23,7 @@ var moveButton = document.querySelector('.tool-button#move');
 
 var error = document.querySelector('.error');
 var infoError = document.querySelector('.info-error');
+var infoError = document.querySelector('.info');
 
 var editModal = document.querySelector('.edit-modal');
 var editModalQuestion = editModal.querySelector('textarea');
@@ -521,6 +522,7 @@ editModalAnswer.addEventListener('input', function (e) {
 })
 
 editModalCancelButton.addEventListener('click', function (e) {
+    error.innerText = ''
     modalVisible = false;
     preview.innerHTML = '';
     editModal.removeAttribute('data-edit');
@@ -588,6 +590,7 @@ function checkForAnswerBeginnings(startX, startY, wordLength, wordDirection) {
 
 editModalOKButton.addEventListener('click', function (e) {
     var errored = false;
+    error.innerText = '';
     var currentLength = editModalAnswer.value.length;
 
     if (editModalQuestion.value === '' || editModalQuestion.value === '') {
@@ -596,7 +599,7 @@ editModalOKButton.addEventListener('click', function (e) {
     } else if (editModalQuestion.value.length > 2000) {
         error.innerText = lang('tooLongQuestion');
         errored = true;
-    } else if (answerRegex.test(editModalAnswer.value)) {
+    } else if (!answerRegex.test(editModalAnswer.value)) {
         error.innerText = lang('onlyAZ');
         errored = true;
     } else if (currentDirection === HORIZONTAL && (selectedCell[X] + currentLength) > crossword.size[WIDTH]

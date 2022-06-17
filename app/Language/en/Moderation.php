@@ -18,5 +18,10 @@ return [
     'commentReports' => 'Comment reports',
     'deleteComment' => 'Delete comment',
     'freeComment' => 'Free comment from reports',
-    'allUsers' => 'All users'
+    'allUsers' => 'All users',
+    'commentModeration' => 'Comment moderation',
+    'crosswordModeration' => 'Crossword moderation',
+    'userModeration' => 'User moderation',
+    'crosswordLink' => 'Crossword link',
+    'deleteUser' => 'Delete user'
 ];

@@ -53,7 +53,7 @@ class CrosswordController extends BaseController {
             if ($save) {
                 $saveData = json_decode($save['save_data'], true);
                 if ($save['needs_update']) {
-                    $this->saveModel->validateSaveData($saveData, $crossword['data']);
+                    $this->saveModel->validateSaveData($saveData, $crossword['data'], $crossword['language']);
                 }
             }
         }

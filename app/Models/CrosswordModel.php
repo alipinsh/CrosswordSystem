@@ -309,7 +309,7 @@ class CrosswordModel extends Model {
                 if (strlen($value[self::QUESTION]) > 2000) {
                     return false;
                 }
-                if (!preg_match('/^['+ self::ALLOWED_LETTERS[$language] +']+$/i', $value[self::ANSWER])) {
+                if (!preg_match('/^[' . self::ALLOWED_LETTERS[$language] . ']+$/i', $value[self::ANSWER])) {
                     return false;
                 }
                 $question = trim($value[self::QUESTION]);

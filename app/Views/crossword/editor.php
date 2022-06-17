@@ -9,6 +9,7 @@
 </div>
 
 <div class="info-error"></div>
+<div class="info"></div>
 
 <div class="info-form">
     <p>

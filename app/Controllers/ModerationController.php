@@ -26,6 +26,17 @@ class ModerationController extends BaseController
         helper(['text', 'mail']);
     }
 
+    public function moderationPage() {
+        if (!$this->session->get('userData.id')) {
+            return redirect()->to('/login');
+        }
+        if ($this->session->get('userData.role') < UserModel::SMALL_MOD_ROLE) {
+            return view('not_found');
+        }
+
+        return view('moderation', ['role' => $this->session->get('userData.role')]);
+    }
+
     public function viewReportsCrosswords()
     {
         if (!$this->session->get('userData.id')) {
@@ -123,7 +134,7 @@ class ModerationController extends BaseController
         return $this->response->setJSON(['success' => 'reported!']);
     }
 
-    public function viewReportsComments()
+    public function viewReportsComment()
     {
         if (!$this->session->get('userData.id')) {
             return redirect()->to('/login');
@@ -163,9 +174,7 @@ class ModerationController extends BaseController
             return $this->response->setJSON(['error' => 'no such comment!']);
         }
 
-        $user = $this->userModel->find($comment['user_id']);
-
-        $this->commentModel->deleteById($commentId);
+        $this->commentModel->delete($commentId);
         return $this->response->setJSON(['success' => 'comment deleted']);
     }
 
@@ -174,7 +183,7 @@ class ModerationController extends BaseController
             return $this->response->setJSON(['error' => 'not a mod!']);
         }
 
-        $commentId = $this->request->getPost('commentId');
+        $commentId = $this->request->getPost('comment_id');
         $comment = $this->commentModel->find($commentId);
         if (!$comment) {
             return $this->response->setJSON(['error' => 'no such comment!']);

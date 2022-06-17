@@ -42,7 +42,7 @@
 <?php endif; ?>
 
 <div class="crossword-info">
-    <div class="title"><?= $crossword['title'] ?><span class="flag-icon"><img src="/img/flag/<?= $c['language'] ?>.svg" alt="<?= $c['language'] ?>"></span></div>
+    <div class="title"><?= $crossword['title'] ?><span class="flag-icon"><img src="/img/flag/<?= $crossword['language'] ?>.svg" alt="<?= $crossword['language'] ?>"></span></div>
     <div class="author">
         <?= lang('Crossword.author')?>:
         <a href="/profile/<?= $crossword['user'] ?>"><?= $crossword['user'] ?></a>

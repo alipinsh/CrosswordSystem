@@ -87,6 +87,8 @@ $routes->post('saves/save', 'SaveController::save');
 $routes->post('saves/delete', 'SaveController::deleteSave');
 $routes->get('saves', 'SaveController::savesList');
 
+$routes->get('moderation', 'ModerationController::moderationPage');
+
 $routes->get('moderation/user', 'ModerationController::viewUsers');
 $routes->post('moderation/user/switch', 'ModerationController::switchRoleUser');
 $routes->post('moderation/user/delete', 'ModerationController::deleteUser');

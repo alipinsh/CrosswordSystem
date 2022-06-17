@@ -10,10 +10,11 @@ var freeComment = function (e) {
     form.append('comment_id', e.currentTarget.parentElement.getAttribute('data-comment'));
     request.open('POST', '/moderation/comment/free', true);
 
+    var comment = e.currentTarget.parentElement;
+
     request.onload = function() {
         if (this.status >= 200 && this.status < 400) {
-            var commentToRemove = e.currentTarget.parentElement;
-            e.currentTarget.parentElement.parentElement.removeChild(commentToRemove);
+            comment.parentElement.removeChild(comment);
         } else {
             console.log('error');
         }
@@ -31,10 +32,11 @@ var deleteComment = function (e) {
     form.append('comment_id', e.currentTarget.parentElement.getAttribute('data-comment'));
     request.open('POST', '/moderation/comment/action', true);
 
+    var comment = e.currentTarget.parentElement;
+
     request.onload = function() {
         if (this.status >= 200 && this.status < 400) {
-            var commentToRemove = e.currentTarget.parentElement;
-            e.currentTarget.parentElement.parentElement.removeChild(commentToRemove);
+            comment.parentElement.removeChild(comment);
         } else {
             console.log('error');
         }
@@ -44,9 +46,9 @@ var deleteComment = function (e) {
 };
 
 freeButtons.forEach(function(button) {
-    button.addEventListener(freeComment);
+    button.addEventListener('click', freeComment);
 });
 
 deleteButtons.forEach(function(button) {
-    button.addEventListener(deleteComment);
+    button.addEventListener('click', deleteComment);
 });

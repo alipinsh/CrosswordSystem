@@ -35,7 +35,7 @@ class SaveController extends BaseController {
 
         $saveData = json_decode($this->request->getPost('progress'), true);
 
-        $this->saveModel->validateSaveData($saveData, $crosswordData);
+        $this->saveModel->validateSaveData($saveData, $crosswordData, $crossword['language']);
 
         $oldSave = $this->saveModel->where('crossword_id', $crosswordId)->where('user_id', $userId)->find();
         if ($oldSave) {

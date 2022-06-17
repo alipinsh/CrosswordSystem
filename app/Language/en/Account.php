@@ -74,5 +74,10 @@ return [
 
     // Account saves
     'saves' => 'Saves',
-    'deleteSave' => 'Delete save'
+    'deleteSave' => 'Delete save',
+
+    // Account preferences
+    'changePreferences' => 'Change preferences',
+    'showSaveOnHome' => 'Show saves on home page',
+    'preferencesUpdateSuccess' => 'Preferences are updated!'
 ];

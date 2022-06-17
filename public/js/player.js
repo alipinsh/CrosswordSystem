@@ -433,7 +433,7 @@ letterInput.addEventListener('keydown', function(e) {
                 highlightWord();
                 break;
         }
-    } else if (ALLOWED_LETTERS.indexOf(letter) > -1) {
+    } else if (ALLOWED_LETTERS[language].indexOf(letter) > -1) {
         inputLetter(getCell(x, y), letter);
         switch (currentDirection) {
             case HORIZONTAL:

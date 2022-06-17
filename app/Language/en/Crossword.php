@@ -50,5 +50,6 @@ return [
     'print' => 'Print',
     'saveProgress' => 'Save progress',
     'publishedAt' => 'Published on',
-    'updatedAt' => 'Updated on'
+    'updatedAt' => 'Updated on',
+    'language' => 'Language'
 ];

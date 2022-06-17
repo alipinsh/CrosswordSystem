@@ -27,7 +27,7 @@ class CommentReportModel extends Model {
         ]);
         $builder->join('comments', 'comments.id = comments_reports.comment_id');
         $builder->join('users', 'users.id = comments.user_id');
-        $builder->orderBy('comments_reports.id', 'DESC');
+        $builder->orderBy('comments_reports.comment_id', 'DESC');
 
         return $builder->get()->getResultArray();
     }

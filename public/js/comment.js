@@ -109,7 +109,7 @@ var reportComment = function(e) {
     e.currentTarget.disabled = true;
 
     var form = new FormData();
-    form.append('comment_id', e.currentTarget.parentElement.getAttribute('data-comment'));
+    form.append('comment_id', e.currentTarget.parentElement.parentElement.getAttribute('data-comment'));
 
     var request = new XMLHttpRequest();
     request.open('POST', '/moderation/comment/report', true);
@@ -179,6 +179,7 @@ function createCommentElement(data) {
     reportButton.classList.add('report-button');
     reportButton.addEventListener('click', reportComment);
     reportButton.innerText = lang('report');
+    commentActions.appendChild(reportButton);
 
     if (data.editable) {
         var editButton = document.createElement('button');

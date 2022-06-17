@@ -36,6 +36,7 @@
     text-align: center;
 }
 
+#change-preferences-tab,
 #change-picture-tab,
 #change-email-tab,
 #change-password-tab {
@@ -68,14 +69,4 @@
 
 .image-error:empty {
     padding: 0;
-}
-
-.save-block {
-    border: 1px solid #7b7b7b;
-    padding: 8px;
-    margin-bottom: 16px;
-}
-
-.delete-save-button-container {
-    text-align: right;
 }
