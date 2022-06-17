@@ -7,15 +7,20 @@ namespace App\Controllers;
 
 class LanguageController extends BaseController {
 
+    const LANGUAGES = ['en', 'ru', 'lv'];
+
     protected $saveModel;
 
     public function languagePage() {
-        return view('language', ['locale' => service('request')->getLocale()]);
+        return view('language', ['locale' => $this->session->get('userData.language') ?: $this->request->getLocale()]);
     }
 
     public function changeLanguage() {
         $locale = $this->request->getPost('language');
-        service('request')->setLocale($locale);
+        if (!in_array($locale, self::LANGUAGES)) {
+            $locale = 'en';
+        }
+        $this->session->push('userData', ['language' => $locale]);
 
         return redirect()->to('/');
     }

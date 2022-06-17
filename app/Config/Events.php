@@ -50,3 +50,9 @@ Events::on('pre_system', function () {
 		Services::toolbar()->respond();
 	}
 });
+
+$languageSetter = new \App\Libraries\LanguageSetter();
+Events::on('pre_system', [$languageSetter, 'changeLanguage']);
+
+$auditLogger = new \App\Libraries\AuditLogger();
+Events::on('post_system', [$auditLogger, 'log']);

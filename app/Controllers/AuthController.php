@@ -87,7 +87,8 @@ class AuthController extends BaseController
                 'email' => $user['email'],
                 'image' => $user['image'],
                 'role' => $user['role'],
-                'show_save_on_home' => $user['show_save_on_home']
+                'show_save_on_home' => $user['show_save_on_home'],
+                'language' => $this->request->getLocale()
             ]);
 
             return redirect()->to('/account');
