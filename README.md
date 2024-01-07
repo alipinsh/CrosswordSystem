@@ -5,7 +5,7 @@ Izstrādātā sistēma ir vietne, kur lietotāji var veidot un dalīties ar sav�
 
 ## Izmantotās tehnoloģijas
 - HTML, CSS, Javascript
-- PHP 7.4
+- PHP 8.2
 - Codeigniter 4
 - MySQL
 
@@ -18,7 +18,7 @@ Izstrādātā sistēma ir vietne, kur lietotāji var veidot un dalīties ar sav�
 
 ## Uzstādīšanas instrukcijas
 Lokāla instalācija:
-1. Uz datora jābūt PHP 7.4 un MySQL
+1. Uz datora jābūt PHP 8.2 un MySQL
 2. Klonēt šo repozitoriju
 3. Atvērt projekta sakni
 4. `composer install`

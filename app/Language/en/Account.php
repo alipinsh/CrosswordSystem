@@ -14,7 +14,7 @@ return [
     'login' => 'Log in',
     'logout' => 'Log out',
     'forgotYourPassword' => 'Forgot your password?',
-    'loggedInWelcome' => 'Welcome {0}! You are logged in.',
+    'loggedInWelcome' => 'Welcome, {0}! You are logged in.',
 
     // Forgotten password
     'forgottenPassword' => 'Forgotten password',
@@ -31,7 +31,7 @@ return [
     'account' => 'Account',
     'accountSettings' => 'Account settings',
     'changeEmail' => 'Change e-mail address',
-    'changeEmailInfo' => 'If you change this we will send you an e-mail at your new address to confirm it.',
+    'changeEmailInfo' => 'If you change this, we will send you an e-mail at your new address to confirm it.',
     'newEmail' => 'New e-mail address',
     'pendingEmail' => 'Pending new e-mail address (Check your e-mail to confirm)',
     'confirmEmail' => 'Confirm your e-mail address',
@@ -59,6 +59,8 @@ return [
     'forgottenPasswordEmail' => 'An e-mail with instructions is sent to the address!',
     'emailAlreadySent' => 'An e-mail is already sent to this address!',
     'invalidRequest' => 'Invalid request!',
+    'userUnauthorized' => 'User is not authorized!',
+    'fileFormatError' => 'File format error!',
 
     // Account page
     'favorited' => 'Favorited {0} crosswords',
@@ -75,6 +77,7 @@ return [
     // Account saves
     'saves' => 'Saves',
     'deleteSave' => 'Delete save',
+    'saveNotYours' => 'This save is not yours',
 
     // Account preferences
     'changePreferences' => 'Change preferences',

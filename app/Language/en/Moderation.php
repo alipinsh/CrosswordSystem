@@ -23,5 +23,14 @@ return [
     'crosswordModeration' => 'Crossword moderation',
     'userModeration' => 'User moderation',
     'crosswordLink' => 'Crossword link',
-    'deleteUser' => 'Delete user'
+    'deleteUser' => 'Delete user',
+    'deletedUser' => 'User is deleted',
+    'reported' => 'Reported',
+    'hidden' => 'Hidden',
+    'deleted' => 'Deleted',
+    'freed' => 'Freed',
+    'noRights' => 'No rights',
+    'noAction' => 'No action',
+    'userDoesntExist' => 'User does not exist',
+    'noRole' => 'No such role'
 ];

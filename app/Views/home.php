@@ -30,7 +30,6 @@
         <div><a href="/crossword/<?= $s['crossword_id'] ?>"><?= $s['title'] ?></a><span class="flag-icon"><img src="/img/flag/<?= $s['language'] ?>.svg"></span></div>
         <div><?= $s['width'] ?> x <?= $s['height'] ?></div>
         <div><?= lang("Crossword.questions", [$s['questions']]) ?></div>
-        <div class="delete-save-button-container"><button class="delete-save-button"><?= lang('Account.deleteSave') ?></button></div>
     </div>
 <?php endforeach; ?>
 </div>

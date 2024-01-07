@@ -8,16 +8,16 @@ return [
     'password' => 'Parole',
     'passwordAgain' => 'Vēlreiz parole',
     'register' => 'Reģistrēties',
-    'alreadyRegistered' => 'Jau reģistrējies? Piesakieties!"',
+    'alreadyRegistered' => 'Jau reģistrējies? Ienākt!"',
 
     // Login/out
     'login' => 'Ienākt',
     'logout' => 'Iziet',
     'forgotYourPassword' => 'Aizmirsāt paroli?',
-    'loggedInWelcome' => 'Welcome {0}! Jūs esat pieteicies.',
+    'loggedInWelcome' => 'Laipni lūdzma, {0}! Jūs esat sistēmā.',
 
     // Forgotten password
-    'forgottenPassword' => 'Aizmirsta parole',
+    'forgottenPassword' => 'Aizmirsu paroli',
     'typeEmail' => 'Ierakstiet savu e-pasta adresi',
     'setNewPassword' => 'Iestatīt jaunu paroli',
 
@@ -47,8 +47,8 @@ return [
     'passwordMismatch' => 'Parolēm jāsakrīt!',
     'registrationSuccess' => 'Veiksmīgs! Lūdzu, aktivizējiet savu kontu, noklikšķinot uz aktivizācijas saites mūsu nosūtītajā e-pastā!"',
     'activationNoUser' => 'Nav lietotāja ar šo aktivizācijas kodu.',
-    'activationSuccess' => 'Veiksmīga aktivizācija! Tagad varat pieteikties savā kontā!',
-    'wrongCredentials' => 'Nepareizi akreditācijas dati!',
+    'activationSuccess' => 'Veiksmīga aktivizācija! Tagad varat izmantot savu kontu!',
+    'wrongCredentials' => 'Nepareizi dati!',
     'notActivated' => 'Šis konts vēl nav aktivizēts.',
     'updateSuccess' => 'Atjaunināšana bija veiksmīga!',
     'accountDeleted' => 'Konts ir veiksmīgi dzēsts!',
@@ -59,20 +59,28 @@ return [
     'forgottenPasswordEmail' => 'Uz šo adresi ir nosūtīts e-pasts ar norādījumiem!',
     'emailAlreadySent' => 'Uz šo adresi jau ir nosūtīts e-pasts!',
     'invalidRequest' => 'Nederīgs pieprasījums!',
+    'userUnauthorized' => 'Lietotājs nav autorizēts!',
+    'fileFormatError' => 'Faila formāta kļūda!',
 
     // Account page
-    'favorited' => 'Izvēlētās {0} krustvārdu mīklas',
+    'favorited' => 'Patīk {0} krustvārdu mīklas',
     'created' => 'Izveidotas {0} krustvārdu mīklas',
     'registeredOn' => 'Reģistrēts {0}',
     'changePicture' => 'Mainīt profila attēlu',
     'imageUpload' => "Augšupielādēt attēlu",
     'showPrivates' => "Rādīt privātas krustvārdu mīklas",
     'createdCrosswords' => 'Izveidotas krustvārdu mīklas',
-    'favoritedCrosswords' => 'Labākas krustvārdu mīklas',
+    'favoritedCrosswords' => 'Patīkamas krustvārdu mīklas',
     'imageInfo' => 'Attēlam jābūt png, gif vai jpeg formātā. Izmērs nedrīkst būt 256 kb vai lielāks.',
     'viewAll' => 'Apskatīt visus',
 
     // Account saves
     'saves' => 'Saglabājumi',
-    'deleteSave' => 'Dzēst saglabājumu'
+    'deleteSave' => 'Dzēst saglabājumu',
+    'saveNotYours' => 'Šīs saglabājums nepieder Jums',
+
+    // Account preferences
+    'changePreferences' => 'Mainīt preferences',
+    'showSaveOnHome' => 'Radīt saglabājumus galvenajā lapā',
+    'preferencesUpdateSuccess' => 'Preferences ir saglabātas!'
 ];

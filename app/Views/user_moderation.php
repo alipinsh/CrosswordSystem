@@ -3,7 +3,7 @@
 <h1><?= lang('Moderation.allUsers') ?></h1>
 <?php foreach ($users as $user): ?>
 <div class="user" data-user="<?= $user['id'] ?>">
-    <span class="username"><?= $user['username'] ?></span>
+    <span class="username"><a href="/profile/<?= $user['username'] ?>"><?= $user['username'] ?></a></span>
     <span class="role">
         <?php switch($user['role']): 
             case 1: ?>

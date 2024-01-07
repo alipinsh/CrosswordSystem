@@ -10,6 +10,7 @@ return [
     'question' => 'Question',
     'answer' => 'Answer',
     'doesNotExist' => 'Crossword does not exist!',
+    'notAvailable' => 'Crossword is not available!',
     'horizontal' => 'Horizontal',
     'vertical' => 'Vertical',
     'save' => 'Save',
@@ -51,5 +52,15 @@ return [
     'saveProgress' => 'Save progress',
     'publishedAt' => 'Published on',
     'updatedAt' => 'Updated on',
-    'language' => 'Language'
+    'language' => 'Language',
+    'textTooLong' => 'Text is too long',
+    'textCantBeBlank' => 'Text cannot be blank',
+    'commentDoesntExist' => 'Comment does not exist',
+    'commentUnavailable' => 'Comment is unavailable',
+    'invalidLanguage' => 'The language is not available',
+    'crosswordDataError' => 'Crossword data error',
+    'tagsDataError' => 'Tags data error',
+    'tooManyTags' => 'Too many tags',
+    'noSuchCrosswordForUser' => 'No such crossword for user',
+    'noId' => 'No ID'
 ];

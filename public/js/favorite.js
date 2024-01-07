@@ -6,7 +6,7 @@ b.addEventListener('click', function (e) {
     var formData = new FormData();
     var crosswordId = document.querySelector('input[name="crossword_id"]').value;
     formData.append("crossword_id", crosswordId);
-    
+
     request.open('POST', '/favorite', true);
 
     request.onload = function() {

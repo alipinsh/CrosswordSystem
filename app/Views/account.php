@@ -14,7 +14,7 @@
         <div class="created-count"><?= lang('Account.created', [$user['createdCount']]) ?></div>
     </div>
 </div>
-    
+
 <?php if ($isMine): ?>
 <div class="account-config">
     <div class="account-config-options">

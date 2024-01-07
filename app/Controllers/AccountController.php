@@ -42,11 +42,11 @@ class AccountController extends BaseController {
             ],
             'isMine' => true
         ];
-        
+
         return view('account', $data);
     }
 
-    public function profile($username = null) {
+    public function profile($username) {
         $userId = $this->userModel->getIdByUsername($username);
         if (!$userId) {
             return view('not_found');
@@ -74,7 +74,7 @@ class AccountController extends BaseController {
 
         return view('account', $data);
     }
-    
+
     public function changeEmail() {
         if (!$this->session->get('userData.id')) {
             return redirect()->to('/login');
@@ -107,20 +107,20 @@ class AccountController extends BaseController {
         send_mail($user['email'], lang('Account.emailUpdateRequest'), 'notification', []);
         return redirect()->to('/account')->with('success', lang('Account.emailUpdateStarted'));
     }
-    
+
     public function confirmNewEmail() {
         $user = $this->userModel->where('auth_code', $this->request->getGet('token'))
-                                   ->where('new_email !=', null)
+                                ->where('new_email !=', null)
                                 ->first();
 
         if (!$user) {
             return redirect()->to('/account')->with('error', lang('Account.activationNoUser'));
         }
-        
+
         $new_mail = $user['new_email'];
         $this->userModel->update($user['id'], ['email' => $new_mail, 'new_email' => null, 'auth_code' => null]);
-        
-        if ($this->session->get('userData.id')) {
+
+        if ($this->session->get('userData.id') == $user['id']) {
             $this->session->push('userData', [
                 'email'		=> $new_mail,
                 'new_email'	=> null
@@ -131,7 +131,7 @@ class AccountController extends BaseController {
 
         return redirect()->to('/login')->with('success', lang('Account.confirmEmailSuccess'));
     }
-    
+
     public function changePassword() {
         if (!$this->session->get('userData.id')) {
             return redirect()->to('/login');
@@ -153,16 +153,16 @@ class AccountController extends BaseController {
         if (!password_verify($this->request->getPost('password'), $user['password_hash'])) {
             return redirect()->to('/account')->withInput()->with('error', lang('Account.wrongCredentials'));
         }
-        
+
         $this->userModel->update($this->session->get('userData.id'), ['password' => $this->request->getPost('new_password')]);
-        
+
         return redirect()->to('/account')->with('success', lang('Account.passwordUpdateSuccess'));
     }
-    
+
     public function uploadImage() {
         $userId = $this->session->get('userData.id');
         if (!$userId) {
-            return $this->response->setJSON(['error' => 'user unauthorized']);
+            return $this->response->setJSON(['error' => lang('Account.userUnauthorized')]);
         }
 
         $valid = $this->validate([
@@ -192,7 +192,7 @@ class AccountController extends BaseController {
             return $this->response->setJSON(['new_image' => $user['image']]);
         }
 
-        return $this->response->setJSON(['error' => 'file format error!']);
+        return $this->response->setJSON(['error' => lang('Account.fileFormatError')]);
     }
 
     public function changePreferences() {
@@ -203,7 +203,7 @@ class AccountController extends BaseController {
         $showSaveOnHome = boolval($this->request->getPost('show_save_on_home'));
         $this->userModel->update($this->session->get('userData.id'), ['show_save_on_home' => $showSaveOnHome]);
         $this->session->push('userData', ['show_save_on_home' => $showSaveOnHome]);
-        
+
         return redirect()->to('/account')->with('success', lang('Account.preferencesUpdateSuccess'));
     }
 }

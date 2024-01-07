@@ -8,5 +8,6 @@ return [
     'show' => 'Показать',
     'hide' => 'Скрыть',
     'changeLanguage' => 'Сменить язык',
-    'submit' => 'Отправить'
+    'submit' => 'Отправить',
+    'language' => 'Язык'
 ];

@@ -23,6 +23,10 @@ main textarea {
     margin: 8px 0;
 }
 
+.info:empty {
+    display: none;
+}
+
 .error,
 .info-error {
     background-color: #c46c71;
@@ -93,6 +97,7 @@ main textarea {
     position: relative;
     margin: auto;
     line-height: 1.5;
+    font-size: 15px;
 }
 
 .grid-index {
@@ -385,7 +390,8 @@ input.dummy {
     .error,
     .edit-modal,
     .move-modal,
-    .delete-form {
+    .delete-form,
+    .flag-icon {
         display: none !important;
     }
 

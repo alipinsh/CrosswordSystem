@@ -58,20 +58,24 @@ class ModerationController extends BaseController
 
     public function actionCrossword() {
         if (!$this->session->get('userData.id') || $this->session->get('userData.role') < UserModel::BIG_MOD_ROLE) {
-            return $this->response->setJSON(['error' => 'not a mod!']);
+            return $this->response->setJSON(['error' => lang('Moderation.noRights')]);
         }
 
         $crosswordId = $this->request->getPost('crossword_id');
         $crossword = $this->crosswordModel->find($crosswordId);
         if (!$crossword || !$crossword['is_public']) {
-            return $this->response->setJSON(['error' => 'no such crossword!']);
+            return $this->response->setJSON(['error' => lang('Crossword.notAvailable')]);
         }
 
         $reasonText = $this->request->getPost('reason_text');
         $reasonText = clean_text($reasonText);
 
+        if (strlen($reasonText) > 65535) {
+            return $this->response->setJSON(['error' => lang('Crossword.textTooLong')]);
+        }
+
         if (!mb_strlen($reasonText)) {
-            return $this->response->setJSON(['error' => 'text can not be blank']);
+            return $this->response->setJSON(['error' => lang('Crossword.textCantBeBlank')]);
         }
 
         $user = $this->userModel->find($crossword['user_id']);
@@ -84,44 +88,48 @@ class ModerationController extends BaseController
                 $crossword['is_public'] = false;
                 $this->crosswordModel->save($crossword);
                 send_mail($userEmail, lang('Moderation.hideNotice'), 'hide_reason', ['crosswordName' => $crosswordName, 'reason' => $reasonText]);
-                return $this->response->setJSON(['success' => 'crossword hidden']);
+                return $this->response->setJSON(['success' => lang('Moderation.hidden')]);
             case 'delete':
                 $this->crosswordModel->deleteById($crosswordId);
                 send_mail($userEmail, lang('Moderation.deleteNotice'), 'delete_reason', ['crosswordName' => $crosswordName, 'reason' => $reasonText]);
-                return $this->response->setJSON(['success' => 'crossword deleted']);
+                return $this->response->setJSON(['success' => lang('Moderation.deleted')]);
             default:
                 break;
         }
 
-        return $this->response->setJSON(['error' => 'no action defined']);
+        return $this->response->setJSON(['error' => lang('Moderation.noAction')]);
     }
 
     public function freeCrossword() {
         if (!$this->session->get('userData.id') || $this->session->get('userData.role') < UserModel::BIG_MOD_ROLE) {
-            return $this->response->setJSON(['error' => 'not a mod!']);
+            return $this->response->setJSON(['error' => lang('Moderation.noRights')]);
         }
 
         $crosswordId = $this->request->getPost('crossword_id');
         $crossword = $this->crosswordModel->find($crosswordId);
         if (!$crossword) {
-            return $this->response->setJSON(['error' => 'no such crossword!']);
+            return $this->response->setJSON(['error' => lang('Crossword.doesNotExist')]);
         }
 
         $this->crosswordReportModel->deleteReportsFor($crosswordId);
-        return $this->response->setJSON(['success' => 'freed from reports']);
+        return $this->response->setJSON(['success' => lang('Moderation.freed')]);
     }
 
     public function sendReportCrossword() {
         $reportText = $this->request->getPost('report_text');
         $reportText = clean_text($reportText);
 
+        if (strlen($reportText) > 65535) {
+            return $this->response->setJSON(['error' => lang('Crossword.textTooLong')]);
+        }
+
         if (!mb_strlen($reportText)) {
-            return $this->response->setJSON(['error' => 'text can not be blank']);
+            return $this->response->setJSON(['error' => lang('Crossword.textCantBeBlank')]);
         }
 
         $crossword = $this->crosswordModel->find($this->request->getPost('crossword_id'));
         if (!$crossword || !$crossword['is_public']) {
-            return $this->response->setJSON(['error' => 'no such crossword!']);
+            return $this->response->setJSON(['error' => lang('Crossword.notAvailable')]);
         }
 
         $comment = [
@@ -131,7 +139,7 @@ class ModerationController extends BaseController
 
         $this->crosswordReportModel->save($comment);
 
-        return $this->response->setJSON(['success' => 'reported!']);
+        return $this->response->setJSON(['success' => lang('Moderation.reported')]);
     }
 
     public function viewReportsComment()
@@ -139,7 +147,7 @@ class ModerationController extends BaseController
         if (!$this->session->get('userData.id')) {
             return redirect()->to('/login');
         }
-        if ($this->session->get('userData.role') < UserModel::BIG_MOD_ROLE) {
+        if ($this->session->get('userData.role') < UserModel::SMALL_MOD_ROLE) {
             return view('not_found');
         }
 
@@ -151,7 +159,7 @@ class ModerationController extends BaseController
     public function sendReportComment() {
         $comment = $this->commentModel->find($this->request->getPost('comment_id'));
         if (!$comment) {
-            return $this->response->setJSON(['error' => 'no such comment!']);
+            return $this->response->setJSON(['error' => lang('Crossword.commentDoesntExist')]);
         }
 
         $comment = [
@@ -160,37 +168,37 @@ class ModerationController extends BaseController
 
         $this->commentReportModel->save($comment);
 
-        return $this->response->setJSON(['success' => 'reported!']);
+        return $this->response->setJSON(['success' => lang('Moderation.reported')]);
     }
 
     public function actionComment() {
         if (!$this->session->get('userData.id') || $this->session->get('userData.role') < UserModel::SMALL_MOD_ROLE) {
-            return $this->response->setJSON(['error' => 'not a mod!']);
+            return $this->response->setJSON(['error' => lang('Moderation.noRights')]);
         }
 
         $commentId = $this->request->getPost('comment_id');
         $comment = $this->commentModel->find($commentId);
         if (!$comment) {
-            return $this->response->setJSON(['error' => 'no such comment!']);
+            return $this->response->setJSON(['error' => lang('Crossword.commentDoesntExist')]);
         }
 
         $this->commentModel->delete($commentId);
-        return $this->response->setJSON(['success' => 'comment deleted']);
+        return $this->response->setJSON(['success' => lang('Moderation.deleted')]);
     }
 
     public function freeComment() {
         if (!$this->session->get('userData.id') || $this->session->get('userData.role') < UserModel::SMALL_MOD_ROLE) {
-            return $this->response->setJSON(['error' => 'not a mod!']);
+            return $this->response->setJSON(['error' => lang('Moderation.noRights')]);
         }
 
         $commentId = $this->request->getPost('comment_id');
         $comment = $this->commentModel->find($commentId);
         if (!$comment) {
-            return $this->response->setJSON(['error' => 'no such comment!']);
+            return $this->response->setJSON(['error' => lang('Crossword.commentDoesntExist')]);
         }
 
         $this->commentReportModel->deleteReportsFor($commentId);
-        return $this->response->setJSON(['success' => 'freed from reports']);
+        return $this->response->setJSON(['success' => lang('Moderation.freed')]);
     }
 
     public function viewUsers() {
@@ -208,18 +216,18 @@ class ModerationController extends BaseController
 
     public function switchRoleUser() {
         if (!$this->session->get('userData.id') || $this->session->get('userData.role') < UserModel::ADMIN_ROLE) {
-            return $this->response->setJSON(['error' => 'not a mod!']);
+            return $this->response->setJSON(['error' => lang('Moderation.noRights')]);
         }
 
         $userId = $this->request->getPost('user_id');
         $user = $this->userModel->find($userId);
         if (!$user) {
-            return $this->response->setJSON(['error' => 'no such user!']);
+            return $this->response->setJSON(['error' => lang('Moderation.userDoesntExist')]);
         }
 
         $roleId = $this->request->getPost('role_id');
-        if (!is_int($roleId) && !($roleId > 0 && $roleId <= UserModel::ADMIN_ROLE)) {
-            return $this->response->setJSON(['error' => 'no such role']);
+        if (!is_int($roleId) && !($roleId > UserModel::GUEST_ROLE && $roleId <= UserModel::ADMIN_ROLE)) {
+            return $this->response->setJSON(['error' => lang('Moderation.noRole')]);
         }
 
         $user['role_id'] = $roleId;
@@ -230,12 +238,12 @@ class ModerationController extends BaseController
 
     public function deleteUser() {
         if (!$this->session->get('userData.id') || $this->session->get('userData.role') < UserModel::ADMIN_ROLE) {
-            return $this->response->setJSON(['error' => 'not a mod!']);
+            return $this->response->setJSON(['error' => lang('Moderation.noRights')]);
         }
 
         $userId = $this->request->getPost('user_id');
         $this->userModel->delete($userId);
 
-        return $this->response->setJSON(['success' => 'deleted user']);
+        return $this->response->setJSON(['success' => lang('Moderation.deletedUser')]);
     }
 }

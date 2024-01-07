@@ -27,19 +27,22 @@ class SaveController extends BaseController {
 
         $crosswordId = $this->request->getPost('crosswordId');
         $crossword = $this->crosswordModel->find($crosswordId);
-        $crosswordData = json_decode($crossword['data'], true);
 
         if (!$crossword || !$crossword['is_public']) {
             return $this->response->setJSON(['error' => lang('Crossword.doesNotExist')]);
         }
 
+        $crosswordData = json_decode($crossword['data'], true);
         $saveData = json_decode($this->request->getPost('progress'), true);
+        if (!$saveData) {
+            $saveData = [[], []];
+        }
 
-        $this->saveModel->validateSaveData($saveData, $crosswordData, $crossword['language']);
+        $this->saveModel->cleanSaveData($saveData, $crosswordData, $crossword['language']);
 
-        $oldSave = $this->saveModel->where('crossword_id', $crosswordId)->where('user_id', $userId)->find();
+        $oldSave = $this->saveModel->where('crossword_id', $crosswordId)->where('user_id', $userId)->first();
         if ($oldSave) {
-            $oldSave['save_data'] = $saveData;
+            $oldSave['save_data'] = json_encode($saveData);
             $this->saveModel->save($oldSave);
         } else {
             $this->saveModel->save([
@@ -62,13 +65,13 @@ class SaveController extends BaseController {
     }
 
     public function deleteSave() {
-        $saveId = $this->request->getPost('saveId');
+        $saveId = $this->request->getPost('save_id');
         $save = $this->saveModel->find($saveId);
         if ($save && $save['user_id'] == $this->session->get('userData.id')) {
             $this->saveModel->delete($saveId);
             return $this->response->setJSON(['deleted_id' => $saveId]);
         } else {
-            return $this->response->setJSON(['error' => 'save is not yours']);
+            return $this->response->setJSON(['error' => lang('Account.saveNotYours')]);
         }
     }
 }

@@ -31,7 +31,7 @@ class CrosswordModel extends Model {
     protected $primaryKey = 'id';
 
     protected $returnType = 'array';
-    
+
     protected $allowedFields = [
         'published_at', 'updated_at',
         'title', 'width', 'height',
@@ -41,7 +41,7 @@ class CrosswordModel extends Model {
 
     protected $useTimestamps = false;
     protected $dateFormat = 'datetime';
-    
+
     protected $validationRules = [];
 
     protected $validationMessages = [];
@@ -272,6 +272,11 @@ class CrosswordModel extends Model {
     }
 
     public function validateCrosswordData(array &$crosswordData, string $language) {
+        // needed attributes check
+        if (!(isset($crosswordData['size']) && isset($crosswordData['positions']) && isset($crosswordData['questions']))) {
+            return false;
+        }
+
         // size check
         if (!(is_numeric($crosswordData['size'][self::WIDTH])
             && is_numeric($crosswordData['size'][self::HEIGHT]))) {
@@ -301,35 +306,65 @@ class CrosswordModel extends Model {
 
         // questions and answers check
         $largestId = 0;
-        foreach ([self::HORIZONTAL, self::VERTICAL] as $o) {
-            foreach ($crosswordData['questions'][$o] as $key => $value) {
-                if (empty($value[self::QUESTION]) || empty($value[self::ANSWER])) {
-                    return false;
-                }
-                if (strlen($value[self::QUESTION]) > 2000) {
-                    return false;
-                }
-                if (!preg_match('/^[' . self::ALLOWED_LETTERS[$language] . ']+$/i', $value[self::ANSWER])) {
-                    return false;
-                }
-                $question = trim($value[self::QUESTION]);
-                $question = preg_replace('/  +/', ' ', $question);
-                $question = preg_replace('/(?:\r?\n|\r){2,}/', "\n", $question);
-                $question = preg_replace('/[ \t]+/', ' ', $question);
-                $question = htmlspecialchars($question);
-                $crosswordData['questions'][$o][$key][self::QUESTION] = $question;
-                $crosswordData['questions'][$o][$key][self::ANSWER] = mb_strtolower($value[self::ANSWER]);
-                if ($largestId < $key) {
-                    $largestId = $key;
-                }
+
+        foreach ($crosswordData['questions'][self::HORIZONTAL] as $key => $value) {
+            if (empty($value[self::QUESTION]) || empty($value[self::ANSWER])) {
+                return false;
+            }
+            if (strlen($value[self::QUESTION]) > 2000) {
+                return false;
+            }
+            if (!preg_match('/^[' . self::ALLOWED_LETTERS[$language] . ']+$/i', $value[self::ANSWER])) {
+                return false;
+            }
+            if (mb_strlen($value[self::ANSWER]) + $crosswordData['positions'][$key - 1][self::X] >= $crosswordData['size'][self::WIDTH]) {
+                return false;
+            }
+
+            $question = trim($value[self::QUESTION]);
+            $question = preg_replace('/(?:\r?\n|\r){2,}/', "\n", $question);
+            $question = preg_replace('/[ \t]+/', ' ', $question);
+            $question = htmlspecialchars($question);
+            $crosswordData['questions'][self::HORIZONTAL][$key][self::QUESTION] = $question;
+            $crosswordData['questions'][self::HORIZONTAL][$key][self::ANSWER] = mb_strtolower($value[self::ANSWER]);
+            if ($largestId < $key) {
+                $largestId = $key;
             }
         }
-        if ($largestId !== sizeof($crosswordData['positions'])) {
+
+        foreach ($crosswordData['questions'][self::VERTICAL] as $key => $value) {
+            if (empty($value[self::QUESTION]) || empty($value[self::ANSWER])) {
+                return false;
+            }
+            if (strlen($value[self::QUESTION]) > 2000) {
+                return false;
+            }
+            if (!preg_match('/^[' . self::ALLOWED_LETTERS[$language] . ']+$/i', $value[self::ANSWER])) {
+                return false;
+            }
+            if (mb_strlen($value[self::ANSWER]) + $crosswordData['positions'][$key - 1][self::Y] >= $crosswordData['size'][self::HEIGHT]) {
+                return false;
+            }
+
+            $question = trim($value[self::QUESTION]);
+            $question = preg_replace('/(?:\r?\n|\r){2,}/', "\n", $question);
+            $question = preg_replace('/[ \t]+/', ' ', $question);
+            $question = htmlspecialchars($question);
+            $crosswordData['questions'][self::VERTICAL][$key][self::QUESTION] = $question;
+            $crosswordData['questions'][self::VERTICAL][$key][self::ANSWER] = mb_strtolower($value[self::ANSWER]);
+            if ($largestId < $key) {
+                $largestId = $key;
+            }
+        }
+
+        if ($largestId !== count($crosswordData['positions'])) {
             return false;
         }
+
+        // check if there are no overlapping horizontal answers
         foreach ($crosswordData['questions'][self::HORIZONTAL] as $key => $value) {
             $position = $crosswordData['positions'][$key - 1];
-            $answerLength = strlen($value[self::ANSWER]);
+            $answerLength = mb_strlen($value[self::ANSWER]);
 
             for ($wx = $position[self::X]+1; $wx < $position[self::X] + $answerLength; ++$wx) {
                 foreach ($crosswordData['positions'] as $i => $p) {
@@ -341,9 +376,11 @@ class CrosswordModel extends Model {
                 }
             }
         }
+
+        // check if there are no overlapping vertical answers
         foreach ($crosswordData['questions'][self::VERTICAL] as $key => $value) {
             $position = $crosswordData['positions'][$key - 1];
-            $answerLength = strlen($value[self::ANSWER]);
+            $answerLength = mb_strlen($value[self::ANSWER]);
 
             for ($wy = $position[self::Y]+1; $wy < $position[self::Y] + $answerLength; ++$wy) {
                 foreach ($crosswordData['positions'] as $i => $p) {
@@ -353,6 +390,42 @@ class CrosswordModel extends Model {
                         return false;
                     }
                 }
+            }
+        }
+
+        // check conflicting cells
+        $grid = [];
+        for ($i = 0; $i < $crosswordData['size'][self::HEIGHT]; ++$i) {
+            $grid[] = array_fill(0, $crosswordData['size'][self::WIDTH], null);
+        }
+
+        foreach ($crosswordData['questions'][self::HORIZONTAL] as $key => $value) {
+            $position = $crosswordData['positions'][$key - 1];
+            $answer = $value[self::ANSWER];
+            $wi = 0;
+
+            for ($wx = $position[self::X]; $wx < $position[self::X] + mb_strlen($answer); ++$wx) {
+                if (is_null($grid[$position[self::Y]][$wx])) {
+                    $grid[$position[self::Y]][$wx] = mb_substr($answer, $wi, 1);
+                } else if ($grid[$position[self::Y]][$wx] != mb_substr($answer, $wi, 1)) {
+                    return false;
+                }
+                $wi++;
+            }
+        }
+
+        foreach ($crosswordData['questions'][self::VERTICAL] as $key => $value) {
+            $position = $crosswordData['positions'][$key - 1];
+            $answer = $value[self::ANSWER];
+            $wi = 0;
+
+            for ($wy = $position[self::Y]; $wy < $position[self::Y] + mb_strlen($answer); ++$wy) {
+                if (is_null($grid[$wy][$position[self::X]])) {
+                    $grid[$wy][$position[self::X]] = mb_substr($answer, $wi, 1);
+                } else if ($grid[$wy][$position[self::X]] != mb_substr($answer, $wi, 1)) {
+                    return false;
+                }
+                $wi++;
             }
         }
 

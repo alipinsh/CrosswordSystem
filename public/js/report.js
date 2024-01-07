@@ -28,7 +28,7 @@ reportForm.addEventListener('submit', function (e) {
     }
 
     var request = new XMLHttpRequest();
-    request.open('POST', '/moderation/report', true);
+    request.open('POST', '/moderation/crossword/report', true);
 
     request.onload = function() {
         if (this.status >= 200 && this.status < 400) {

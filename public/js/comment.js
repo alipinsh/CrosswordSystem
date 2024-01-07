@@ -116,7 +116,7 @@ var reportComment = function(e) {
 
     request.onload = function() {
         if (this.status >= 200 && this.status < 400) {
-            
+
         } else {
             console.log('error');
         }

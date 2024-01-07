@@ -12,7 +12,7 @@ class CommentModel extends Model {
     protected $primaryKey = 'id';
 
     protected $returnType = 'array';
-    
+
     protected $allowedFields = [
         'user_id', 'crossword_id', 'text'
     ];
@@ -21,7 +21,7 @@ class CommentModel extends Model {
     protected $createdField = 'posted_at';
     protected $updatedField = 'edited_at';
     protected $dateFormat = 'datetime';
-    
+
     protected $validationRules = [];
 
     protected $validationMessages = [];
@@ -50,8 +50,7 @@ class CommentModel extends Model {
 
     public function getCommentsForCount($crosswordId) {
         $builder = $this->db->table($this->table);
-        $builder->select(['comments.id', 'comments.user_id', 'comments.text', 'comments.posted_at', 'comments.edited_at',
-            'users.username', 'users.image']);
+        $builder->select(['comments.id']);
         $builder->join('users', 'users.id = comments.user_id');
 
         $builder->where('crossword_id', $crosswordId);

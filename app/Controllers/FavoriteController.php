@@ -8,7 +8,6 @@ namespace App\Controllers;
 use Config\Services;
 use App\Models\CrosswordModel;
 use App\Models\UserModel;
-use App\Models\CommentModel;
 use Config\Database;
 
 class FavoriteController extends BaseController {

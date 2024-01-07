@@ -56,22 +56,22 @@ class SaveModel extends Model {
         return $builder->get()->getResultArray();
     }
 
-    public function validateSaveData(&$saveData, $crosswordData, $language) {
+    public function cleanSaveData(&$saveData, $crosswordData, $language) {
         $saveData[self::HORIZONTAL] = array_intersect_key($saveData[self::HORIZONTAL], $crosswordData['questions'][self::HORIZONTAL]);
         $saveData[self::VERTICAL] = array_intersect_key($saveData[self::VERTICAL], $crosswordData['questions'][self::VERTICAL]);
 
         foreach ($crosswordData['questions'][self::HORIZONTAL] as $key => $value) {
             if (!isset($saveData[self::HORIZONTAL][$key])
-                || strlen($saveData[self::HORIZONTAL][$key]) != strlen($value[self::ANSWER])
+                || mb_strlen($saveData[self::HORIZONTAL][$key]) != mb_strlen($value[self::ANSWER])
                 || !preg_match('/^[' . CrosswordModel::ALLOWED_LETTERS[$language] . '\*]+$/', $saveData[self::HORIZONTAL][$key])) {
-                $saveData[self::HORIZONTAL][$key] = str_repeat('*', strlen($value[self::ANSWER]));
+                $saveData[self::HORIZONTAL][$key] = str_repeat('*', mb_strlen($value[self::ANSWER]));
             }
         }
         foreach ($crosswordData['questions'][self::VERTICAL] as $key => $value) {
             if (!isset($saveData[self::VERTICAL][$key])
-                || strlen($saveData[self::VERTICAL][$key]) != strlen($value[self::ANSWER])
+                || mb_strlen($saveData[self::VERTICAL][$key]) != mb_strlen($value[self::ANSWER])
                 || !preg_match('/^[' . CrosswordModel::ALLOWED_LETTERS[$language] . '\*]+$/', $saveData[self::VERTICAL][$key])) {
-                $saveData[self::VERTICAL][$key] = str_repeat('*', strlen($value[self::ANSWER]));
+                $saveData[self::VERTICAL][$key] = str_repeat('*', mb_strlen($value[self::ANSWER]));
             }
         }
     }

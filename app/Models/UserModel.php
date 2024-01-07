@@ -26,7 +26,7 @@ class UserModel extends Model {
     protected $primaryKey = 'id';
 
     protected $returnType = 'array';
-    
+
     protected $allowedFields = [
         'username', 'email', 'image', 'created_count', 'favorited_count', 'registered_on',
         'password', 'password_confirm',
@@ -35,7 +35,7 @@ class UserModel extends Model {
 
     protected $useTimestamps = false;
     protected $dateFormat = 'datetime';
-    
+
     protected $validationRules = [];
 
     protected $validationMessages = [];
@@ -44,10 +44,12 @@ class UserModel extends Model {
 
     protected $beforeInsert = ['hashPassword'];
     protected $beforeUpdate = ['hashPassword'];
-    
+
     protected function hashPassword(array $data)
     {
-        if (! isset($data['data']['password'])) return $data;
+        if (!isset($data['data']['password'])) {
+            return $data;
+        }
 
         $data['data']['password_hash'] = password_hash($data['data']['password'], PASSWORD_DEFAULT);
         unset($data['data']['password']);

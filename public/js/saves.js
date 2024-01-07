@@ -5,7 +5,7 @@ var deleteButtonOnClick = function (e) {
 
     var request = new XMLHttpRequest();
     var form = new FormData();
-    form.append('saveId', e.currentTarget.parentElement.parentElement.getAttribute('data-sid'));
+    form.append('save_id', e.currentTarget.parentElement.parentElement.getAttribute('data-sid'));
     request.open('POST', '/saves/delete', true);
 
     request.onload = function() {

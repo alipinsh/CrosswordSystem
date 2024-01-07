@@ -10,14 +10,14 @@ var STRINGS = {
     "overlap": "Overlap! Jūs nevarat šeit pievienot vārdu pašreizējā orientācijā!",
     'nothingToEdit': 'Nav ko rediģēt...',
     "noEmptyFields": "Nav tukšu lauku!",
-    'onlyAZ': 'Atbildēs izmantot tikai a-z burtus',
-    'answerOutOutOfBounds': "Atbildēt ārpus robežām!",
+    'onlyAZ': 'Atbildēs izmantot tikai valodas mazus burtus',
+    'answerOutOutOfBounds': "Atbilde ārpus robežām!",
     "wordOverlap": "Vārdi pārklājas vienā un tajā pašā orientācijā!",
     "numericMoveValues": "Pārvietojuma vērtībām jābūt skaitliskajām!",
-    "notBlankTitle": "Virsraksts nedrīkst būt tukšs!",
+    "notBlankTitle": "Nosaukums nedrīkst būt tukšs!",
     "tooLongTitle": "Nosaukums ir pārāk garš!",
     "tooLongQuestion": "Jautājums ir pārāk garš!",
-    "notEmptyTags": "Tags nedrīkst būt tukšas",
+    "notEmptyTags": "Tagi nedrīkst būt tukšas",
     "lettersAndCommaInTags": "Tags drīkst saturēt tikai burtu un ciparu zīmes, atdalītas ar komatu",
     'wayTooManyTags': "Pārāk daudz tagu!",
     'noQuestions': 'Krustvārdu mīkla ir tukša!',
@@ -26,7 +26,8 @@ var STRINGS = {
     "notEmptyMessage": "Ziņojums nevar būt tukšs",
     "tooLongMessage": "Ziņojums ir pārāk garš!",
     "show": "Rādīt",
-    "hide": "Paslēpt"
+    "hide": "Paslēpt",
+    'report': 'Ziņot'
 }
 
 function lang(string) {

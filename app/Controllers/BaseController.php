@@ -25,6 +25,10 @@ class BaseController extends Controller
         $this->session = Services::session();
         $this->userModel = new UserModel();
         $this->crosswordModel = new CrosswordModel();
+
+        if (!$this->session->has('userData')) {
+            $this->session->set('userData', []);
+        }
     }
 
 }

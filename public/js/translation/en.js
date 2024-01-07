@@ -10,7 +10,7 @@ var STRINGS = {
     'overlap': 'Overlap! You can\'t add a word here in the current orientation!',
     'nothingToEdit': 'Nothing to edit...',
     'noEmptyFields': 'No empty fields!',
-    'onlyAZ': 'Use only a-z letters in answers',
+    'onlyAZ': 'Use only language small letters in answers',
     'answerOutOfBounds': 'Answer out of bounds!',
     'wordOverlap': 'Word overlap in the same orientation!',
     'numericMoveValues': 'Move values should be numeric!',

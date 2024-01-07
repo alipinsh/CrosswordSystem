@@ -5,5 +5,6 @@ return [
     'welcomeMessageUser' => 'Здравствуйте, {0}!',
     'latestCrosswords' => 'Последние кроссворды',
     'viewAllCrosswords' => 'Просмотр всех кроссвордов',
-    'viewAllTags' => 'Просмотр всех тегов'
+    'viewAllTags' => 'Просмотр всех тегов',
+    'latestSaves' => 'Последние сохранения'
 ];

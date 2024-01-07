@@ -3,10 +3,11 @@
 return [
     'notFound' => 'Lapa nav atrasta',
     'search' => 'Meklēt',
-    'allTags' => 'Visas birkas',
+    'allTags' => 'Visi tagi',
     'none' => 'Nav',
     'show' => 'Parādīt',
     'hide' => 'Paslēpt',
     'changeLanguage' => 'Mainīt valodu',
-    'submit' => 'Atsūtīt'
+    'submit' => 'Atsūtīt',
+    'language' => 'Valoda'
 ];

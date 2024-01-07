@@ -11,13 +11,13 @@ return [
     'alreadyRegistered' => 'Уже зарегистрированы? Авторизируйтесь!',
 
     // Login/out
-    'login' => 'Авторизоваться',
+    'login' => 'Авторизироваться',
     'logout' => 'Выйти',
     'forgotYourPassword' => 'Забыли пароль?',
-    'loggedInWelcome' => 'Добро пожаловать {0}! вы вошли успешно.',
+    'loggedInWelcome' => 'Добро пожаловать, {0}! Вы вошли успешно.',
 
     // Forgotten password
-    'forgottenPassword' => 'Забыли пароль',
+    'forgottenPassword' => 'Забыт пароль',
     'typeEmail' => 'Введите адрес вашей электронной почты',
     'setNewPassword' => 'Установить новый пароль',
 
@@ -49,21 +49,23 @@ return [
     'activationNoUser' => 'Нет пользователя с таким кодом активации.',
     'activationSuccess' => 'Успешная активация! Теперь вы можете войти в свой аккаунт!',
     'wrongCredentials' => 'Неверные учетные данные!',
-    'notActivated' => 'Этот аккаунт еще не активирован.',
+    'notActivated' => 'Этот аккаунт ещё не активирован.',
     'updateSuccess' => 'Обновление прошло успешно!',
     'accountDeleted' => 'Аккаунт успешно удален!',
     'emailUpdateStarted' => 'Успех! Пожалуйста, подтвердите свой новый адрес, нажав на ссылку в отправленном нами письме!',
     'confirmEmailSuccess' => 'Подтверждение успешно! Ваш новый адрес электронной почты теперь активен.',
-    'passwordUpdateSuccess' => 'Пароль успешно обновлен!',
+    'passwordUpdateSuccess' => 'Пароль успешно обновлён!',
     'wrongEmail' => 'Неверный адрес электронной почты!',
     'forgottenPasswordEmail' => 'На адрес отправлено письмо с инструкциями!',
     'emailAlreadySent' => 'На этот адрес уже отправлено письмо!',
     'invalidRequest' => 'Неверный запрос!',
+    'userUnauthorized' => 'Пользователь не авторизирован!',
+    'fileFormatError' => 'Ошибка формата файла!',
 
     // Account page
     'favorited' => 'Избранно {0} кроссвордов',
     'created' => 'Создано {0} кроссвордов',
-    'registeredOn' => 'Зарегистрирован на {0}',
+    'registeredOn' => 'Зарегистрирован {0}',
     'changePicture' => 'Изменить картинку профиля',
     'imageUpload' => 'Загрузить картинку',
     'showPrivates' => 'Показать приватные кроссворды',
@@ -74,5 +76,11 @@ return [
 
     // Account saves
     'saves' => 'Сохранения',
-    'deleteSave' => 'Удалить сохранение'
+    'deleteSave' => 'Удалить сохранение',
+    'saveNotYours' => 'Сохранение не принадлежит вам',
+
+    // Account preferences
+    'changePreferences' => 'Изменить предпочтения',
+    'showSaveOnHome' => 'Показать сохранения на главной странице',
+    'preferencesUpdateSuccess' => 'Предпочтения обновлены!'
 ];

@@ -27,11 +27,7 @@ class CrosswordController extends BaseController {
         helper(['text']);
     }
 
-    public function view($id = null) {
-        if ($id == null) {
-            return redirect()->to('/crosswords');
-        }
-
+    public function view($id = 0) {
         $crossword = $this->crosswordModel->find($id);
         if (!$crossword) {
             return redirect()->to('/crosswords');
@@ -53,7 +49,7 @@ class CrosswordController extends BaseController {
             if ($save) {
                 $saveData = json_decode($save['save_data'], true);
                 if ($save['needs_update']) {
-                    $this->saveModel->validateSaveData($saveData, $crossword['data'], $crossword['language']);
+                    $this->saveModel->cleanSaveData($saveData, $crossword['data'], $crossword['language']);
                 }
             }
         }
@@ -74,7 +70,7 @@ class CrosswordController extends BaseController {
         );
     }
 
-    public function edit($id = null) {
+    public function edit($id = 0) {
         if (!$this->session->get('userData.id')) {
             return redirect()->to('/login');
         }
@@ -83,24 +79,23 @@ class CrosswordController extends BaseController {
             if ($crossword && $crossword['user_id'] == $this->session->get('userData.id')) {
                 return view('crossword/editor', ['crossword' => $crossword]);
             }
-            return redirect()->to('/crossword/edit');
         }
         return view('crossword/editor');
     }
 
     public function save() {
         if (!$this->session->get('userData.id')) {
-            return $this->response->setJSON(['error' => 'please log in']);
+            return $this->response->setJSON(['error' => lang('Account.userUnauthorized')]);
         }
 
         $language = $this->request->getPost('language');
         if (!in_array($language, ['en', 'ru', 'lv'])) {
-            return $this->response->setJSON(['error' => 'invalid language']);
+            return $this->response->setJSON(['error' => lang('Crossword.invalidLanguage')]);
         }
 
         $crosswordData = json_decode($this->request->getPost('crossword_data'), true);
         if (!$this->crosswordModel->validateCrosswordData($crosswordData, $language)) {
-            return $this->response->setJSON(['error' => 'problem with crossword data']);
+            return $this->response->setJSON(['error' => lang('Crossword.crosswordDataError')]);
         }
 
         $title = trim($this->request->getPost('title'));
@@ -108,18 +103,21 @@ class CrosswordController extends BaseController {
 
         $tags = json_decode(mb_strtolower($this->request->getPost('tags')), true);
 
+        if ($tags) {
+            $tags = [];
+        }
+
         if (!$this->tagModel->validateTags($tags)) {
-            return $this->response->setJSON(['error' => 'problem with tags data']);
+            return $this->response->setJSON(['error' => lang('Crossword.tagsDataError')]);
         }
 
         $tagsText = implode(',', $tags);
-        if (mb_strlen($tagsText) > 65535) {
-            return $this->response->setJSON(['error' => 'way too many tags']);
+        if (strlen($tagsText) > 65535) {
+            return $this->response->setJSON(['error' => lang('Crossword.tooManyTags')]);
         }
 
         $rules = [
             'title' => 'required|min_length[1]|max_length[255]',
-            'is_public' => 'required'
         ];
         $this->crosswordModel->setValidationRules($rules);
         $userId = intval($this->session->get('userData.id'));
@@ -143,9 +141,7 @@ class CrosswordController extends BaseController {
             if ($oldCrossword && $oldCrossword['user_id'] == $userId) {
                 $crossword['id'] = $crosswordId;
 
-                if (is_null($oldCrossword['published_at']) && $crossword['is_public']) {
-                    $crossword['published_at'] = $currentTime;
-                } else {
+                if (!is_null($oldCrossword['published_at'])) {
                     $crossword['updated_at'] = $currentTime;
                 }
 
@@ -162,14 +158,16 @@ class CrosswordController extends BaseController {
                     $needsUpdate = true;
                 } else {
                     foreach ($oldCrosswordQuestions[CrosswordModel::HORIZONTAL] as $oldKey => $oldValue) {
-                        if ($oldValue[CrosswordModel::ANSWER] != $newCrosswordQuestions[CrosswordModel::HORIZONTAL][$oldKey][CrosswordModel::ANSWER]) {
+                        if (isset($newCrosswordQuestions[CrosswordModel::HORIZONTAL][$oldKey]) &&
+                            $oldValue[CrosswordModel::ANSWER] != $newCrosswordQuestions[CrosswordModel::HORIZONTAL][$oldKey][CrosswordModel::ANSWER]) {
                             $needsUpdate = true;
                             break;
                         }
                     }
                     if (!$needsUpdate) {
                         foreach ($oldCrosswordQuestions[CrosswordModel::VERTICAL] as $oldKey => $oldValue) {
-                            if ($oldValue[CrosswordModel::ANSWER] != $newCrosswordQuestions[CrosswordModel::VERTICAL][$oldKey][CrosswordModel::ANSWER]) {
+                            if (isset($newCrosswordQuestions[CrosswordModel::VERTICAL][$oldKey]) &&
+                                $oldValue[CrosswordModel::ANSWER] != $newCrosswordQuestions[CrosswordModel::VERTICAL][$oldKey][CrosswordModel::ANSWER]) {
                                 $needsUpdate = true;
                                 break;
                             }
@@ -181,49 +179,50 @@ class CrosswordController extends BaseController {
                     $this->saveModel->setNeedsUpdateFor($crosswordId);
                 }
             }
-        } else {
-            if ($crossword['is_public']) {
-                $crossword['published_at'] = $currentTime;
-            }
+        }
+
+        if ($crossword['is_public'] && is_null($crossword['published_at'])) {
+            $crossword['published_at'] = $currentTime;
         }
 
         if (!$this->crosswordModel->save($crossword)) {
             return $this->response->setJSON(['error' => $this->crosswordModel->getErrors()]);
         }
-        $crosswordId = $crosswordId ? $crosswordId : $this->crosswordModel->getInsertID();
+        $crosswordId = $crosswordId ?: $this->crosswordModel->getInsertID();
         $this->tagModel->updateTags($crosswordId);
         $this->userModel->updateCreatedCount($userId);
 
         return $this->response->setJSON(['crossword_id' => $crosswordId]);
     }
 
-    public function delete($id = null) {
+    public function delete($id = 0) {
         if (!$this->session->get('userData.id')) {
-            return $this->response->setJSON(['error' => 'please log in']);
+            return $this->response->setJSON(['error' => lang('Account.userUnauthorized')]);
         }
-        if ($id) {
-            $crossword = $this->crosswordModel->find($id);
-            if ($crossword && $crossword['user_id'] == $this->session->get('userData.id')) {
-                $usersFavorited = $this->crosswordModel->getUsersFavorited($id);
-                $this->crosswordModel->deleteById($id);
-                $this->userModel->updateCreatedCount($this->session->get('userData.id'));
-                $this->userModel->updateFavoritedCountMultiple($usersFavorited);
-                return $this->response->setJSON(['success' => 'deleted']);
-            }
-            return $this->response->setJSON(['error' => 'no such crossword for current user']);
+
+        $crossword = $this->crosswordModel->find($id);
+        if ($crossword && $crossword['user_id'] == $this->session->get('userData.id')) {
+            $usersFavorited = $this->crosswordModel->getUsersFavorited($id);
+            $this->crosswordModel->deleteById($id);
+            $this->userModel->updateCreatedCount($this->session->get('userData.id'));
+            $this->userModel->updateFavoritedCountMultiple($usersFavorited);
+            return $this->response->setJSON(['success' => 'deleted']);
         }
-        return $this->response->setJSON(['error' => 'no id specified']);
+
+        return $this->response->setJSON(['error' => lang('Crossword.noSuchCrosswordForUser')]);
 
     }
 
-    public function listCreated($username = null) {
+    public function listCreated($username) {
         $userId = $this->userModel->getIdByUsername($username);
         if ($userId) {
             $itemsCount = $this->crosswordModel->getCrosswordListByUserCount($userId, $this->crosswordModel::CREATED);
             $pages = ceil($itemsCount / self::ITEMS_PER_PAGE) ?: 1;
-            $currentPage = is_numeric($this->request->getGet('p')) ? floor($this->request->getGet('p')) : 1;
+            $currentPage = intval($this->request->getGet('p'));
             if ($currentPage > $pages) {
                 $currentPage = $pages;
+            } else if ($currentPage < 1) {
+                $currentPage = 1;
             }
 
             return view('crossword/list',
@@ -240,14 +239,16 @@ class CrosswordController extends BaseController {
         return view('not_found');
     }
 
-    public function listFavorited($username = null) {
+    public function listFavorited($username) {
         $userId = $this->userModel->getIdByUsername($username);
         if ($userId) {
             $itemsCount = $this->crosswordModel->getCrosswordListByUserCount($userId, $this->crosswordModel::FAVORITED);
             $pages = ceil($itemsCount / self::ITEMS_PER_PAGE) ?: 1;
-            $currentPage = is_numeric($this->request->getGet('p')) ? floor($this->request->getGet('p')) : 1;
+            $currentPage = intval($this->request->getGet('p'));
             if ($currentPage > $pages) {
                 $currentPage = $pages;
+            } else if ($currentPage < 1) {
+                $currentPage = 1;
             }
 
             return view('crossword/list',
@@ -264,13 +265,15 @@ class CrosswordController extends BaseController {
         return view('not_found');
     }
 
-    public function listByTag($tag = null) {
+    public function listByTag($tag) {
         if ($this->tagModel->checkIfTagExists($tag)) {
             $itemsCount = $this->crosswordModel->getCrosswordListByTagCount($tag);
             $pages = ceil($itemsCount / self::ITEMS_PER_PAGE) ?: 1;
-            $currentPage = is_numeric($this->request->getGet('p')) ? floor($this->request->getGet('p')) : 1;
+            $currentPage = intval($this->request->getGet('p'));
             if ($currentPage > $pages) {
                 $currentPage = $pages;
+            } else if ($currentPage < 1) {
+                $currentPage = 1;
             }
 
             return view('crossword/list',
@@ -286,7 +289,7 @@ class CrosswordController extends BaseController {
         return view('not_found');
     }
 
-    public function search($searchQuery = null) {
+    public function search($searchQuery) {
         $searchQuery = clean_text($searchQuery);
 
         if (!mb_strlen($searchQuery)) {
@@ -295,9 +298,11 @@ class CrosswordController extends BaseController {
 
         $itemsCount = $this->crosswordModel->getCrosswordListBySearchQueryCount($searchQuery);
         $pages = ceil($itemsCount / self::ITEMS_PER_PAGE) ?: 1;
-        $currentPage = is_numeric($this->request->getGet('p')) ? floor($this->request->getGet('p')) : 1;
+        $currentPage = intval($this->request->getGet('p'));
         if ($currentPage > $pages) {
             $currentPage = $pages;
+        } else if ($currentPage < 1) {
+            $currentPage = 1;
         }
 
         return view('crossword/list',
@@ -318,9 +323,11 @@ class CrosswordController extends BaseController {
 
         $itemsCount = $this->crosswordModel->getCrosswordListPrivatesCount($userId);
         $pages = ceil($itemsCount / self::ITEMS_PER_PAGE) ?: 1;
-        $currentPage = is_numeric($this->request->getGet('p')) ? floor($this->request->getGet('p')) : 1;
+        $currentPage = intval($this->request->getGet('p'));
         if ($currentPage > $pages) {
             $currentPage = $pages;
+        } else if ($currentPage < 1) {
+            $currentPage = 1;
         }
 
         return view('crossword/list',
@@ -336,9 +343,11 @@ class CrosswordController extends BaseController {
     public function listAll() {
         $itemsCount = $this->crosswordModel->getCrosswordListCount();
         $pages = ceil($itemsCount / self::ITEMS_PER_PAGE) ?: 1;
-        $currentPage = is_numeric($this->request->getGet('p')) ? floor($this->request->getGet('p')) : 1;
+        $currentPage = intval($this->request->getGet('p'));
         if ($currentPage > $pages) {
             $currentPage = $pages;
+        } else if ($currentPage < 1) {
+            $currentPage = 1;
         }
 
         return view('crossword/list', [

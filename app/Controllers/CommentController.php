@@ -20,23 +20,23 @@ class CommentController extends BaseController {
 
     public function post() {
         if (!$this->session->get('userData.id')) {
-            return $this->response->setJSON(['error' => 'please log in']);
+            return $this->response->setJSON(['error' => lang('Account.userUnauthorized')]);
         }
 
         if (!$this->crosswordModel->where('is_public', true)->find($this->request->getPost('crossword_id'))) {
-            return $this->response->setJSON(['error' => 'no such crossword']);
+            return $this->response->setJSON(['error' => lang('Crossword.notAvailable')]);
         }
 
         $commentText = $this->request->getPost('comment_text');
 
-        if (mb_strlen($commentText) > 65535) {
-            return $this->response->setJSON(['error' => 'comment too long']);
+        if (strlen($commentText) > 65535) {
+            return $this->response->setJSON(['error' => lang('Crossword.textTooLong')]);
         }
 
         $commentText = clean_text($commentText);
 
         if (!mb_strlen($commentText)) {
-            return $this->response->setJSON(['error' => 'text can not be blank']);
+            return $this->response->setJSON(['error' => lang('Crossword.textCantBeBlank')]);
         }
 
         $comment = [
@@ -64,61 +64,64 @@ class CommentController extends BaseController {
 
     public function get() {
         $cid = $this->request->getGet('cid');
-        if ($cid) {
-            $itemsCount = $this->commentModel->getCommentsForCount($cid);
-            $pages = ceil($itemsCount / self::ITEMS_PER_PAGE) ?: 1;
-            $currentPage = is_numeric($this->request->getGet('p')) ? floor($this->request->getGet('p')) : 1;
-            if ($currentPage > $pages) {
-                $currentPage = $pages;
-            }
-
-            $comments = $this->commentModel->getCommentsFor($cid, self::ITEMS_PER_PAGE, self::ITEMS_PER_PAGE * ($currentPage - 1));
-            $userId = $this->session->get('userData.id');
-            foreach ($comments as $key => $comment) {
-                if ($comment['user_id'] == $userId) {
-                    $comments[$key]['editable'] = true;
-                }
-            }
-            return $this->response->setJSON(['comments' => $comments, 'totalPages' => $pages]);
+        if (!$this->crosswordModel->where('is_public', true)->find($cid)) {
+            return $this->response->setJSON(['error' => lang('Crossword.notAvailable')]);
         }
-        return null;
+
+        $itemsCount = $this->commentModel->getCommentsForCount($cid);
+        $pages = ceil($itemsCount / self::ITEMS_PER_PAGE) ?: 1;
+        $currentPage = intval($this->request->getGet('p'));
+        if ($currentPage > $pages) {
+            $currentPage = $pages;
+        } else if ($currentPage < 1) {
+            $currentPage = 1;
+        }
+
+        $comments = $this->commentModel->getCommentsFor($cid, self::ITEMS_PER_PAGE, self::ITEMS_PER_PAGE * ($currentPage - 1));
+        $userId = $this->session->get('userData.id');
+        foreach ($comments as $key => $comment) {
+            if ($comment['user_id'] == $userId) {
+                $comments[$key]['editable'] = true;
+            }
+        }
+        return $this->response->setJSON(['comments' => $comments, 'totalPages' => $pages]);
     }
 
     public function delete() {
         $commentId = $this->request->getPost('id');
         $comment = $this->commentModel->find($commentId);
         if (!$comment || $comment['user_id'] != $this->session->get('userData.id')) {
-            return $this->response->setJSON(['error' => 'comment unavailable']);
+            return $this->response->setJSON(['error' => lang('Crossword.commentUnavailable')]);
         }
         $crossword = $this->crosswordModel->find($comment['crossword_id']);
         if ($crossword['is_public']) {
             $this->commentModel->delete($commentId);
             return $this->response->setJSON(['deleted_id' => $commentId]);
         }
-        return $this->response->setJSON(['error' => 'comment unavailable']);
+        return $this->response->setJSON(['error' => lang('Crossword.commentUnavailable')]);
     }
 
     public function edit() {
         $commentId = $this->request->getPost('id');
         $comment = $this->commentModel->find($commentId);
         if (!$comment || $comment['user_id'] != $this->session->get('userData.id')) {
-            return $this->response->setJSON(['error' => 'comment unavailable']);
+            return $this->response->setJSON(['error' => lang('Crossword.commentUnavailable')]);
         }
 
         if (!$this->crosswordModel->where('is_public', true)->find($comment['crossword_id'])) {
-            return $this->response->setJSON(['error' => 'no such crossword']);
+            return $this->response->setJSON(['error' => lang('Crossword.notAvailable')]);
         }
 
         $commentText = $this->request->getPost('edited_text');
 
-        if (mb_strlen($commentText) > 65535) {
-            return $this->response->setJSON(['error' => 'comment too long']);
+        if (strlen($commentText) > 65535) {
+            return $this->response->setJSON(['error' => lang('Crossword.textTooLong')]);
         }
 
         $commentText = clean_text($commentText);
 
         if (!mb_strlen($commentText)) {
-            return $this->response->setJSON(['error' => 'text can not be blank']);
+            return $this->response->setJSON(['error' => lang('Crossword.textCantBeBlank')]);
         }
 
         $comment['text'] = $commentText;

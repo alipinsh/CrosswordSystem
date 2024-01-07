@@ -1,7 +1,7 @@
 <?php
 /*
  * Kontrollera klase, kura nodarbojas ar autentifikācijas darbībām.
- * Kods ir bazēts uz koda no šita repozitorija: https://github.com/divpusher/codeigniter4-auth
+ * Kods ir bazēts uz koda no šāja repozitorija: https://github.com/divpusher/codeigniter4-auth
  */
 
 namespace App\Controllers;
@@ -17,6 +17,10 @@ class AuthController extends BaseController
     }
 
     public function register() {
+        if ($this->session->get('userData.id')) {
+            return redirect()->to('/account');
+        }
+
         if ($this->request->getMethod() === 'post') {
             $rules = [
                 'username' => 'required|min_length[2]|max_length[64]|is_unique[users.username]|alpha_dash',
@@ -31,7 +35,7 @@ class AuthController extends BaseController
                 'password' => $this->request->getPost('password'),
                 'password_confirm' => $this->request->getPost('password_confirm'),
                 'image' => 'default.png',
-                'role' => 1,
+                'role' => UserModel::USER_ROLE,
                 'registered_on' => date('Y-m-d H:i:s', time()),
                 'auth_code' => random_string('alnum', 16)
             ];
@@ -43,16 +47,14 @@ class AuthController extends BaseController
             send_mail($newUser['email'], lang('Account.registration'), 'activation', ['hash' => $newUser['auth_code']]);
             return redirect()->to('/login')->with('success', lang('Account.registrationSuccess'));
         }
-        if ($this->session->get('userData.id')) {
-            return redirect()->to('/account');
-        }
-        
+
         return view('auth/register');
     }
 
     public function activateAccount() {
         $user = $this->userModel->where('auth_code', $this->request->getGet('token'))
-                                ->where('email_confirmed', false)->first();
+                                ->where('email_confirmed', false)
+                                ->first();
 
         if (is_null($user)) {
             return redirect()->to('/login')->with('error', lang('Account.activationNoUser'));
@@ -63,11 +65,16 @@ class AuthController extends BaseController
     }
 
     public function login() {
+        if ($this->session->get('userData.id')) {
+            return redirect()->to('/account');
+        }
+
         if ($this->request->getMethod() === 'post') {
             $rules = [
-                'email' => 'required|valid_email',
+                'email' => 'required',
                 'password' => 'required|min_length[8]|max_length[64]',
             ];
+
             if (!$this->validate($rules)) {
                 return redirect()->to('/login')->withInput()->with('errors', $this->validator->getErrors());
             }
@@ -76,7 +83,7 @@ class AuthController extends BaseController
             if (is_null($user) || !password_verify($this->request->getPost('password'), $user['password_hash'])) {
                 return redirect()->to('/login')->withInput()->with('error', lang('Account.wrongCredentials'));
             }
-            
+
             if (!$user['email_confirmed']) {
                 return redirect()->to('/login')->withInput()->with('error', lang('Account.notActivated'));
             }
@@ -94,20 +101,20 @@ class AuthController extends BaseController
             return redirect()->to('/account');
         }
 
-        if ($this->session->get('userData.id')) {
-            return redirect()->to('/account');
-        }
-        
         return view('auth/login');
     }
 
     public function logout() {
         $this->session->remove('userData');
-        
+
         return redirect()->to('/login');
     }
-    
+
     public function forgotPassword() {
+        if ($this->session->get('userData.id')) {
+            return redirect()->to('/account');
+        }
+
         if ($this->request->getMethod() === 'post') {
             if (!$this->validate(['email' => 'required|valid_email'])) {
                 return redirect()->back()->with('error', lang('Account.wrongEmail'));
@@ -130,10 +137,7 @@ class AuthController extends BaseController
             send_mail($this->request->getPost('email'), lang('Account.passwordResetRequest'), 'reset', ['hash' => $reset_code]);
             return redirect()->back()->with('success', lang('Account.forgottenPasswordEmail'));
         }
-        if ($this->session->get('userData.id')) {
-            return redirect()->to('/account');
-        }
-        
+
         return view('auth/forgot_password');
     }
 
