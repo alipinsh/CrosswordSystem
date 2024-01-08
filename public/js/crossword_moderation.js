@@ -19,7 +19,7 @@ reasonForm.addEventListener('submit', function (e) {
     }
 
     var request = new XMLHttpRequest();
-    request.open('POST', '/moderation/action', true);
+    request.open('POST', '/moderation/crossword/action', true);
 
     request.onload = function() {
         if (this.status >= 200 && this.status < 400) {
