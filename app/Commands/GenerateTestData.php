@@ -69,36 +69,35 @@ class GenerateTestData extends BaseCommand
         shuffle($userIds);
         $crosswordUserIds = array_slice($userIds, 0, 30);
 
+        $langs = ['lv', 'ru', 'en'];
         $tags = ['special', 'funky', 'funny', 'interesting', 'complicated', 'smart', 'crazy', 'groovy', 'awesome', 'world'];
 
         CLI::write('Generating crosswords');
         $crosswordIds = [];
-        foreach (['en', 'ru', 'lv'] as $lang) {
-            CLI::write('Generating for ' . $lang);
-            for ($i = 0; $i < 100; $i++) {
-                shuffle($tags);
-                $tagsText = implode(',', array_slice($tags, 0, random_int(0, 5)));
-                $cData = $this->generateCrosswordData($lang);
-                $crosswordData = [
-                    'title' => '[G] ' . $faker->text(50),
-                    'width' => $cData['size'][CrosswordModel::WIDTH],
-                    'height' => $cData['size'][CrosswordModel::HEIGHT],
-                    'questions' => sizeof($cData['questions'][CrosswordModel::HORIZONTAL]) +
-                        sizeof($cData['questions'][CrosswordModel::VERTICAL]),
-                    'data' => json_encode($cData),
-                    'user_id' => $crosswordUserIds[array_rand($crosswordUserIds)],
-                    'is_public' => 1,
-                    'tags' => $tagsText,
-                    'language' => $lang,
-                    'published_at' => date('Y-m-d H:i:s', time())
-                ];
+        for ($i = 0; $i < 300; $i++) {
+            $lang = $langs[random_int(0, 2)];
+            shuffle($tags);
+            $tagsText = implode(',', array_slice($tags, 0, random_int(1, 5)));
+            $cData = $this->generateCrosswordData($lang);
+            $crosswordData = [
+                'title' => '[G] ' . $faker->text(50),
+                'width' => $cData['size'][CrosswordModel::WIDTH],
+                'height' => $cData['size'][CrosswordModel::HEIGHT],
+                'questions' => sizeof($cData['questions'][CrosswordModel::HORIZONTAL]) +
+                    sizeof($cData['questions'][CrosswordModel::VERTICAL]),
+                'data' => json_encode($cData),
+                'user_id' => $crosswordUserIds[array_rand($crosswordUserIds)],
+                'is_public' => 1,
+                'tags' => $tagsText,
+                'language' => $lang,
+                'published_at' => date('Y-m-d H:i:s', time())
+            ];
 
-                $crosswordId = $crosswordModel->insert($crosswordData, true);
-                $crosswordIds[] = $crosswordId;
+            $crosswordId = $crosswordModel->insert($crosswordData, true);
+            $crosswordIds[] = $crosswordId;
 
-                $tagModel->updateTags($crosswordId);
-                $userModel->updateCreatedCount($crosswordData['user_id']);
-            }
+            $tagModel->updateTags($crosswordId);
+            $userModel->updateCreatedCount($crosswordData['user_id']);
         }
 
         // Attach favorites

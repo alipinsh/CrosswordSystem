@@ -103,7 +103,7 @@ class CrosswordController extends BaseController {
 
         $tags = json_decode(mb_strtolower($this->request->getPost('tags')), true);
 
-        if ($tags) {
+        if (!$tags) {
             $tags = [];
         }
 

@@ -244,6 +244,10 @@ class ModerationController extends BaseController
         $userId = $this->request->getPost('user_id');
         $this->userModel->delete($userId);
 
+        if ($userId == $this->session->get('userData.id')) {
+            return redirect()->to('/logout');
+        }
+
         return $this->response->setJSON(['success' => lang('Moderation.deletedUser')]);
     }
 }

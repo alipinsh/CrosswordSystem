@@ -317,7 +317,7 @@ class CrosswordModel extends Model {
             if (!preg_match('/^[' . self::ALLOWED_LETTERS[$language] . ']+$/i', $value[self::ANSWER])) {
                 return false;
             }
-            if (mb_strlen($value[self::ANSWER]) + $crosswordData['positions'][$key - 1][self::X] >= $crosswordData['size'][self::WIDTH]) {
+            if (mb_strlen($value[self::ANSWER]) + $crosswordData['positions'][$key - 1][self::X] - 1 >= $crosswordData['size'][self::WIDTH]) {
                 return false;
             }
 
@@ -342,7 +342,7 @@ class CrosswordModel extends Model {
             if (!preg_match('/^[' . self::ALLOWED_LETTERS[$language] . ']+$/i', $value[self::ANSWER])) {
                 return false;
             }
-            if (mb_strlen($value[self::ANSWER]) + $crosswordData['positions'][$key - 1][self::Y] >= $crosswordData['size'][self::HEIGHT]) {
+            if (mb_strlen($value[self::ANSWER]) + $crosswordData['positions'][$key - 1][self::Y] - 1 >= $crosswordData['size'][self::HEIGHT]) {
                 return false;
             }
 
