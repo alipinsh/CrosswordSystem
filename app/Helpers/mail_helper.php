@@ -8,7 +8,7 @@ if (!function_exists('send_mail')) {
         $locale = service('request')->getLocale();
         $htmlMessage = view('email/' . $locale . '/' . $viewName, $viewVars);
 
-        $email = service('mail');
+        $email = service('email');
         $email->initialize([
             'mailType' => 'html'
         ]);

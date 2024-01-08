@@ -31,6 +31,21 @@ class CrosswordReportModel extends Model {
         return $builder->get()->getResultArray();
     }
 
+    public function getReportListById($id) {
+        $builder = $this->db->table($this->table);
+        $builder->select([
+            'crosswords_reports.crossword_id',
+            'crosswords.title',
+            'crosswords.is_public',
+            'crosswords_reports.report'
+        ]);
+        $builder->where('crosswords.id', $id);
+        $builder->join('crosswords', 'crosswords.id = crosswords_reports.crossword_id');
+        $builder->orderBy('crosswords_reports.id', 'DESC');
+
+        return $builder->get()->getResultArray();
+    }
+
     public function deleteReportsFor(int $crosswordId) {
         $builder = $this->db->table($this->table);
         $builder->where('crossword_id', $crosswordId)->delete();

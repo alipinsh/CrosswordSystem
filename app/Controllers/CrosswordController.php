@@ -55,7 +55,7 @@ class CrosswordController extends BaseController {
         }
 
         $isModerator = $this->session->get('userData.role') >= UserModel::BIG_MOD_ROLE;
-        $hasReports = $isModerator ? boolval(count($this->crosswordReportModel->getReportList())) : false;
+        $hasReports = $isModerator ? boolval(count($this->crosswordReportModel->getReportListById($id))) : false;
 
         $crossword['user'] = $this->userModel->find($crossword['user_id'])['username'];
 
