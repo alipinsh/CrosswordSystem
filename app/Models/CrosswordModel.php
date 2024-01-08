@@ -441,7 +441,9 @@ class CrosswordModel extends Model {
         $builder = $builder->get();
         $builder = $builder->getResultArray();
 
-        return $builder;
+        return array_map(function ($row) {
+            return $row['user_id'];
+        }, $builder);
     }
 
     public function deleteById(int $id) {

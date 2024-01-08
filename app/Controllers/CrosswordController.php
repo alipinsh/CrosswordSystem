@@ -49,7 +49,7 @@ class CrosswordController extends BaseController {
             if ($save) {
                 $saveData = json_decode($save['save_data'], true);
                 if ($save['needs_update']) {
-                    $this->saveModel->cleanSaveData($saveData, $crossword['data'], $crossword['language']);
+                    $this->saveModel->cleanSaveData($saveData, json_decode($crossword['data'], true), $crossword['language']);
                 }
             }
         }
@@ -141,7 +141,7 @@ class CrosswordController extends BaseController {
             if ($oldCrossword && $oldCrossword['user_id'] == $userId) {
                 $crossword['id'] = $crosswordId;
 
-                if (!is_null($oldCrossword['published_at'])) {
+                if (isset($oldCrossword['published_at'])) {
                     $crossword['updated_at'] = $currentTime;
                 }
 
@@ -181,7 +181,7 @@ class CrosswordController extends BaseController {
             }
         }
 
-        if ($crossword['is_public'] && is_null($crossword['published_at'])) {
+        if ($crossword['is_public'] && !isset($crossword['published_at'])) {
             $crossword['published_at'] = $currentTime;
         }
 

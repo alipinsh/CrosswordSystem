@@ -89,7 +89,7 @@ class UserModel extends Model {
     public function updateFavoritedCountMultiple(array $userIds) {
         $builder = $this->db->table('users_favs');
         $builder->select('users_favs.user_id')->selectCount('users_favs.crossword_id', 'favorited_count');
-        $builder->groupBy('users_favs.crossword_id')->havingIn('users_favs.user_id', $userIds);
+        $builder->groupBy('users_favs.user_id')->havingIn('users_favs.user_id', $userIds);
         $counts = $builder->get()->getResultArray();
         $counts = array_map(function($c) {
             return [
@@ -99,7 +99,7 @@ class UserModel extends Model {
         }, $counts);
 
         $userBuilder = $this->db->table($this->table);
-        $userBuilder->updateBatch($counts);
+        $userBuilder->updateBatch($counts, ['id']);
     }
 
 }
