@@ -32,14 +32,14 @@ var deleteUser = function (e) {
 
     var request = new XMLHttpRequest();
     var form = new FormData();
-    form.append('user_id', e.currentTarget.parentElement.parentElement.getAttribute('data-user'));
+    form.append('user_id', e.currentTarget.parentElement.getAttribute('data-user'));
     request.open('POST', '/moderation/user/delete', true);
 
     var buttonElement = e.currentTarget;
 
     request.onload = function() {
         if (this.status >= 200 && this.status < 400) {
-            buttonElement.parentElement.parentElement.parentElement.removeChild(buttonElement.parentElement.parentElement);
+            buttonElement.parentElement.parentElement.removeChild(buttonElement.parentElement);
         } else {
             console.log('error');
         }
