@@ -42,7 +42,7 @@ if (freeButton) {
         form.append('crossword_id', freeButton.getAttribute('data-cid'));
 
         var request = new XMLHttpRequest();
-        request.open('POST', '/moderation/free', true);
+        request.open('POST', '/moderation/crossword/free', true);
 
         request.onload = function() {
             if (this.status >= 200 && this.status < 400) {
